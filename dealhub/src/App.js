@@ -1,16 +1,17 @@
-// src/App.js
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
-import LandingPage from './components/LandingPage'; // <<<<< Updated this line
-import MerchantLogin from './components/MerchantLogin'; // You already have this
+import LandingPage from './components/LandingPage';
+import MerchantLogin from './components/MerchantLogin';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/merchant-login" element={<MerchantLogin />} />
       </Routes>
     </Router>
