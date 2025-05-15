@@ -1,15 +1,17 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MerchantLogin from "./components/MerchantLogin";
-import MerchantDashboard from "./components/MerchantDashboard";
+// src/App.js
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
+import LandingPage from './components/LandingPage'; // <<<<< Updated this line
+import MerchantLogin from './components/MerchantLogin'; // You already have this
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MerchantLogin />} />
-        <Route path="/merchant-dashboard" element={<MerchantDashboard />} />
-        <Route path="*" element={<h2>Page Not Found</h2>} />
+        <Route path="/login" element={<Login />} />
+        
+        <Route path="/merchant-login" element={<MerchantLogin />} />
       </Routes>
     </Router>
   );
