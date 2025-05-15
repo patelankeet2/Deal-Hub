@@ -1,15 +1,18 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MerchantLogin from "./components/MerchantLogin";
-import MerchantDashboard from "./components/MerchantDashboard";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register';
+import LandingPage from './components/LandingPage';
+import MerchantLogin from './components/MerchantLogin';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MerchantLogin />} />
-        <Route path="/merchant-dashboard" element={<MerchantDashboard />} />
-        <Route path="*" element={<h2>Page Not Found</h2>} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/merchant-login" element={<MerchantLogin />} />
       </Routes>
     </Router>
   );
