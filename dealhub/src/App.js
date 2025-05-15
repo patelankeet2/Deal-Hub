@@ -1,24 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MerchantLogin from "./components/MerchantLogin";
+import MerchantDashboard from "./components/MerchantDashboard";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MerchantLogin />} />
+        <Route path="/merchant-dashboard" element={<MerchantDashboard />} />
+        <Route path="*" element={<h2>Page Not Found</h2>} />
+      </Routes>
+    </Router>
   );
 }
 
