@@ -1,0 +1,95 @@
+.landing-page {
+  font-family: Arial, sans-serif;
+}
+
+.hero {
+  background-image: url('https://via.placeholder.com/1500x500');
+  height: 500px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  position: relative;
+}
+
+.hero .overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+}
+
+.cta-button {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.section {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.deals-grid,
+.category-grid,
+.features {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.deals-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.category-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.features {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.deal-card,
+.category-card {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.image-placeholder {
+  height: 150px;
+  background: #ccc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.promo {
+  background-color: #6c63ff;
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.newsletter {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.newsletter input {
+  padding: 0.5rem;
+  margin-right: 1rem;
+  width: 250px;
+  max-width: 80%;
+}
+
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
