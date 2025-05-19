@@ -1,0 +1,195 @@
+/* src/components/MerchantDashboard.css */
+.merchant-dashboard {
+    display: flex;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    background: #f8f9fc;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background: white;
+    border-right: 1px solid #ddd;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .sidebar-header h2 {
+    color: #6366f1;
+    margin-bottom: 2rem;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar nav li {
+    padding: 0.75rem 0;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .sidebar nav li.active {
+    font-weight: bold;
+    color: #6366f1;
+  }
+  
+  .user-info {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-weight: bold;
+  }
+  
+  .username {
+    margin-top: 0.5rem;
+  }
+  
+  .settings {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .create-btn {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .metrics {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .metric-card {
+    flex: 1;
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .notifications ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  .notifications li {
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+  
+  .notifications .success {
+    background: #e6f4ea;
+    border-left: 4px solid #2ecc71;
+  }
+  
+  .notifications .info {
+    background: #eef4ff;
+    border-left: 4px solid #3498db;
+  }
+  
+  .notifications .error {
+    background: #fbeaea;
+    border-left: 4px solid #e74c3c;
+  }
+  
+  .current-deals table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .current-deals th,
+  .current-deals td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+  }
+  
+  .badge.active {
+    background-color: #6366f1;
+  }
+  
+  .badge.pending-approval {
+    background-color: #f39c12;
+  }
+  
+  .badge.closed-won {
+    background-color: #2ecc71;
+  }
+  
+  .badge.closed-lost {
+    background-color: #e74c3c;
+  }
+  
+  .earnings-trend img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  .footer {
+    text-align: center;
+    color: gray;
+    font-size: 0.85rem;
+    margin-top: 2rem;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+  }
