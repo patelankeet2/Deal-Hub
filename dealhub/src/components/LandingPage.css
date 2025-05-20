@@ -1,95 +1,86 @@
 .landing-page {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .hero {
-  background-image: url('https://via.placeholder.com/1500x500');
-  height: 500px;
-  color: white;
+  
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  background-size: cover;
   position: relative;
+  color: white;
 }
 
-.hero .overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 2rem;
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  text-align: center;
+  border-radius: 8px;
 }
 
-.cta-button {
-  background-color: #6c63ff;
+.hero-overlay h1 {
+  font-size: 3rem;
+}
+
+.hero-overlay button {
+  margin-top: 20px;
+  padding: 10px 30px;
+  background: #6c63ff;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
-  cursor: pointer;
+  border-radius: 6px;
 }
 
-.section {
-  padding: 3rem 1.5rem;
+.trending-deals, .categories, .promo-banner, .why-choose, .newsletter {
+  padding: 60px 10%;
   text-align: center;
 }
 
-.deals-grid,
-.category-grid,
-.features {
+.deals-grid, .category-grid, .features {
   display: grid;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.deals-grid {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-}
-
-.category-grid {
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
-
-.features {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-.deal-card,
-.category-card {
-  background: #f9f9f9;
-  padding: 1rem;
+.deal-card, .category-card, .feature {
+  background: #fff;
+  padding: 16px;
   border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.image-placeholder {
-  height: 150px;
-  background: #ccc;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-.promo {
-  background-color: #6c63ff;
+.promo-banner {
+  background: #6c63ff;
   color: white;
-  text-align: center;
-  padding: 3rem 1rem;
 }
 
-.newsletter {
-  padding: 3rem 1rem;
-  text-align: center;
+.promo-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-.newsletter input {
-  padding: 0.5rem;
-  margin-right: 1rem;
-  width: 250px;
-  max-width: 80%;
+.badge {
+  background: red;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  border-radius: 4px;
 }
 
-footer {
-  background: #333;
+.footer {
+  background: #222;
   color: white;
-  text-align: center;
-  padding: 2rem 1rem;
-  margin-top: 2rem;
+  padding: 30px 10%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-right a {
+  margin-left: 15px;
+  color: #bbb;
+  text-decoration: none;
 }
