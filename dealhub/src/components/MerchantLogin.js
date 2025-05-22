@@ -45,7 +45,7 @@ const MerchantLogin = () => {
 
         <div className="login-links">
           <a href="/merchant-register">Register as a Merchant</a>
-          <a href="#">Forgot Password?</a>
+          <a href="/merchant-forgot-password">Forgot Password?</a>
         </div>
       </div>
 

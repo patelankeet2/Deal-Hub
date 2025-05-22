@@ -8,6 +8,7 @@ import CreateDeal from './components/CreateDeal';
 import AnalyticsPage from './components/AnalyticsPage';
 import Settings from './components/Settings';
 import MerchantRegister from './components/MerchantRegister';
+import MerchantForgotPassword from './components/MerchantForgotPassword';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/merchant-register" element={<MerchantRegister />} />
+        <Route path="/merchant-forgot-password" element={<MerchantForgotPassword />} />
       </Routes>
     </Router>
   );
