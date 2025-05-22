@@ -1,23 +1,18 @@
+// src/components/MerchantLogin.js
+
 import React, { useState } from "react";
 import "./MerchantLogin.css";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"; // ✅ Add this line
+import logo from "../assets/logo.png";
 
 const MerchantLogin = () => {
   const navigate = useNavigate();
-  const [licenseNumber, setLicenseNumber] = useState("");
-  const [licenseError, setLicenseError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const licensePattern = /^\d{7}(-\d{2})?$/;
-
-    if (!licensePattern.test(licenseNumber)) {
-      setLicenseError("Invalid NZ license number format.");
-      return;
-    }
-
-    setLicenseError("");
+    // Perform login logic
     navigate("/merchant-dashboard");
   };
 
@@ -28,34 +23,32 @@ const MerchantLogin = () => {
         <p>Manage your deals and track your performance.</p>
         <form onSubmit={handleLogin}>
           <label>Email Address</label>
-          <input type="email" placeholder="merchant@example.com" required />
-
-          <label>Password</label>
-          <input type="password" placeholder="Enter password" required />
-
-          <label>Driving License Number</label>
           <input
-            type="text"
-            placeholder="e.g., 1234567 or 1234567-01"
-            value={licenseNumber}
-            onChange={(e) => setLicenseNumber(e.target.value)}
+            type="email"
+            placeholder="merchant@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-          {licenseError && <div className="error">{licenseError}</div>}
-          <small>Your license number is required to verify merchant status.</small>
 
-          <div className="secure-note">🔒 Secure connection</div>
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
           <button type="submit">Login</button>
         </form>
 
         <div className="login-links">
-          <a href="#">Switch to Customer/Admin Login</a>
+          <a href="/merchant-register">Register as a Merchant</a>
           <a href="#">Forgot Password?</a>
         </div>
       </div>
 
-      {/* ✅ Replace the camera icon with the logo image */}
       <div className="login-image">
         <img src={logo} alt="Deal Hub Logo" className="dealhub-logo" />
       </div>
