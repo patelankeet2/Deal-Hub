@@ -1,0 +1,161 @@
+/* Create Deal Container Styles */
+.create-deal-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .create-deal-container h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .deal-form {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .deal-details,
+  .media-config {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .deal-details label,
+  .media-config label {
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="file"],
+  input[type="date"],
+  textarea,
+  select {
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .preview-image {
+    margin-top: 1rem;
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border: 1px solid #eee;
+    border-radius: 6px;
+  }
+  
+  .date-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .date-fields input[type="date"] {
+    flex: 1;
+  }
+  
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  button {
+    padding: 0.6rem 1.2rem;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button.save {
+    background-color: #6366f1;
+    color: white;
+  }
+  
+  button:hover {
+    opacity: 0.95;
+  }
+  
+  /* Navbar Styles for Create Deal Page */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: #6366f1;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #444;
+    font-weight: 500;
+  }
+  
+  .nav-links a.active {
+    color: #6366f1;
+    border-bottom: 2px solid #6366f1;
+    padding-bottom: 4px;
+  }
+  
+  .search-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .search-profile input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .profile-circle {
+    background-color: #6366f1;
+    color: white;
+    font-weight: bold;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: gray;
+  }

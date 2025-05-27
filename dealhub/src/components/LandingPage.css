@@ -1,0 +1,86 @@
+.landing-page {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.hero {
+  
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.hero-overlay h1 {
+  font-size: 3rem;
+}
+
+.hero-overlay button {
+  margin-top: 20px;
+  padding: 10px 30px;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.trending-deals, .categories, .promo-banner, .why-choose, .newsletter {
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.deals-grid, .category-grid, .features {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.deal-card, .category-card, .feature {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.promo-banner {
+  background: #6c63ff;
+  color: white;
+}
+
+.promo-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: red;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+.footer {
+  background: #222;
+  color: white;
+  padding: 30px 10%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-right a {
+  margin-left: 15px;
+  color: #bbb;
+  text-decoration: none;
+}
