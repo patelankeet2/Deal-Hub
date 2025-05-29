@@ -1,0 +1,72 @@
+.deal-details-page {
+  padding: 40px 10%;
+  font-family: 'Segoe UI', sans-serif;
+}
+ 
+.deal-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+}
+ 
+.deal-image {
+  width: 360px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+ 
+.deal-info {
+  max-width: 500px;
+}
+ 
+.deal-info h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+ 
+.price-info {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+ 
+.old-price {
+  text-decoration: line-through;
+  color: gray;
+  margin-right: 8px;
+}
+ 
+.new-price {
+  color: #e53935;
+  font-weight: bold;
+}
+ 
+.description {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+ 
+.add-to-cart-btn {
+  padding: 12px 24px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+ 
+.add-to-cart-btn:hover {
+  background: #4f46e5;
+}
+ 
+.deal-details-loading,
+.deal-details-error {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+  color: gray;
+}
