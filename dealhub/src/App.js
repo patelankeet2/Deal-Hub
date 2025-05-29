@@ -16,6 +16,13 @@ import AnalyticsPage from './components/AnalyticsPage';
 import Settings from './components/Settings';
 import MerchantRegister from './components/MerchantRegister';
 import MerchantForgotPassword from './components/MerchantForgotPassword';
+import DealsPage from './components/DealsPage';
+import DealDetailsPage from './components/DealDetailsPage';
+import CartPage from './components/CartPage';
+import PaymentPage from './components/PaymentPage';
+import FeedbackPage from './components/FeedbackPage';
+import OrderTrackingPage from './components/OrderTrackingPage';
+import CustomerProfilePage from './components/CustomerProfilePage.JS';
 
 
 function App() {
@@ -26,6 +33,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<LandingPage />} />
+        <Route path="/deals" element={<DealsPage />} />
+        <Route path="/deal/:dealId" element={<DealDetailsPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
+        <Route path="/orders" element={<OrderTrackingPage />} />
+        <Route path="/profile" element={<CustomerProfilePage />} />
+ 
         <Route path="/merchant-login" element={<MerchantLogin />} />
 
         <Route path="/admin-manage-deals" element={<AdminManageDeals />} />
