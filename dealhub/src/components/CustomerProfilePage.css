@@ -1,0 +1,80 @@
+.profile-page {
+  padding: 40px 10%;
+  font-family: 'Segoe UI', sans-serif;
+}
+ 
+.profile-page h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+ 
+.profile-form {
+  max-width: 500px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+ 
+.profile-form label {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+ 
+.profile-form input,
+.profile-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+ 
+.profile-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+ 
+.profile-form button {
+  margin-top: 24px;
+  background: #6366f1;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+ 
+.profile-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+ 
+.profile-photo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+ 
+.placeholder {
+  width: 120px;
+  height: 120px;
+  background: #eee;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+ 
