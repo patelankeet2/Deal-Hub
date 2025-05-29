@@ -1,0 +1,34 @@
+
+.merchant-customers-page {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.merchant-customers-page h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.customers-table th,
+.customers-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f1f1;
+  text-align: left;
+}
+
+.customers-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #374151;
+}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './CreateDeal.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 
 const CreateDeal = () => {
   const navigate = useNavigate();
@@ -10,37 +12,51 @@ const CreateDeal = () => {
     title: '',
     description: '',
     price: '',
+    discount: '',
     category: '',
     startDate: '',
     endDate: '',
-    image: null,
+    imageUrl: '',
   });
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setForm({ ...form, image: file });
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Deal Submitted:', form);
-    alert('Deal submitted for approval!');
-    navigate('/merchant-dashboard');
+    setLoading(true);
+
+    try {
+      const dealData = {
+        title: form.title,
+        description: form.description,
+        price: parseFloat(form.price),
+        discount: parseInt(form.discount),
+        category: form.category,
+        startDate: form.startDate,
+        endDate: form.endDate,
+        imageUrl: form.imageUrl,
+        topDeal: true,
+        createdAt: serverTimestamp(),
+      };
+
+      await addDoc(collection(db, 'deals'), dealData);
+      alert('✅ Deal submitted successfully!');
+      navigate('/merchant-dashboard');
+    } catch (error) {
+      console.error('❌ Submission error:', error.message);
+      alert('Error submitting deal: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      {/* Top Navbar */}
       <header className="navbar">
         <div className="logo">DealHub</div>
         <nav className="nav-links">
@@ -50,58 +66,68 @@ const CreateDeal = () => {
           <a href="/settings">Settings</a>
         </nav>
         <div className="search-profile">
-          <input type="text" placeholder="Search deals, products..." />
-          <div className="profile-circle">A</div>
+          <input type="text" placeholder="Search deals..." />
+          <div className="profile-circle">M</div>
         </div>
       </header>
 
       <div className="create-deal-container">
         <h2>Create New Deal</h2>
         <form className="deal-form" onSubmit={handleSubmit}>
-          <div className="deal-details">
-            <label>Deal Title</label>
-            <input name="title" value={form.title} onChange={handleChange} required placeholder="e.g., 20% Off All Courses" />
+          <label>Deal Title</label>
+          <input name="title" value={form.title} onChange={handleChange} required />
 
-            <label>Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange} required placeholder="Describe the deal benefits..." />
+          <label>Description</label>
+          <textarea name="description" value={form.description} onChange={handleChange} required />
 
-            <label>Price / Discount</label>
-            <input name="price" value={form.price} onChange={handleChange} required placeholder="$10 OFF or 20%" />
+          <label>Price ($)</label>
+          <input name="price" type="number" value={form.price} onChange={handleChange} required />
 
-            <label>Category</label>
-            <select name="category" value={form.category} onChange={handleChange} required>
-              <option value="">Select a category</option>
-              <option value="courses">Courses</option>
-              <option value="ebooks">E-books</option>
-              <option value="services">Services</option>
-            </select>
-          </div>
+          <label>Discount (%)</label>
+          <input name="discount" type="number" value={form.discount} onChange={handleChange} required />
 
-          <div className="media-config">
-            <label>Deal Image</label>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            {imagePreview && <img src={imagePreview} alt="Preview" className="preview-image" />}
+          <label>Category</label>
+          <select name="category" value={form.category} onChange={handleChange} required>
+            <option value="">Select category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Food">Food</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Books">Books</option>
+          </select>
 
-            <div className="date-fields">
-              <div>
-                <label>Start Date</label>
-                <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
-              </div>
-              <div>
-                <label>End Date</label>
-                <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
-              </div>
-            </div>
-          </div>
+          <label>Start Date</label>
+          <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+
+          <label>End Date</label>
+          <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+
+          <label>Image URL</label>
+          <input
+            name="imageUrl"
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            value={form.imageUrl}
+            onChange={handleChange}
+            required
+          />
+          {form.imageUrl && (
+            <img
+              src={form.imageUrl}
+              alt="Preview"
+              style={{ width: '200px', marginTop: '10px', borderRadius: '8px' }}
+            />
+          )}
 
           <div className="form-actions">
-            <button type="button" onClick={() => navigate('/merchant-dashboard')}>Cancel</button>
-            <button type="submit" className="save">Submit for Approval</button>
+            <button type="submit" className="save" disabled={loading}>
+              {loading ? 'Submitting...' : 'Submit Deal'}
+            </button>
           </div>
         </form>
       </div>
+
       <footer className="footer">
-        <p>© 2024 DealHub Inc. All rights reserved.</p>
+        <p>© 2025 DealHub. All rights reserved.</p>
       </footer>
     </>
   );

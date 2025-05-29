@@ -1,195 +1,39 @@
 
-.analytics-container {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f9f9fb;
-    color: #333;
-  }
-  
-  .analytics-topbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background: white;
-    border-bottom: 1px solid #e0e0e0;
-    align-items: center;
-  }
-  
-  .logo {
-    font-weight: bold;
-    font-size: 20px;
-    color: #4f46e5;
-  }
-  
-  .nav-links a {
-    margin-right: 1.5rem;
-    text-decoration: none;
-    color: #444;
-    font-weight: 500;
-  }
-  
-  .nav-links a.active {
-    color: #4f46e5;
-    border-bottom: 2px solid #4f46e5;
-    padding-bottom: 2px;
-  }
-  
-  .actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .create-deal-btn {
-    background: #4f46e5;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .profile-circle {
-    background: #4f46e5;
-    color: white;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-  
-  .analytics-layout {
-    display: flex;
-    padding: 2rem;
-  }
-  
-  .analytics-sidebar {
-    width: 220px;
-    background: white;
-    padding: 1rem;
-    border-right: 1px solid #eee;
-  }
-  
-  .analytics-sidebar h4 {
-    margin-bottom: 1rem;
-  }
-  
-  .filter-group {
-    margin-bottom: 1rem;
-  }
-  
-  .filter-group label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-size: 0.9rem;
-  }
-  
-  .filter-group select {
-    width: 100%;
-    padding: 0.4rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .apply-btn {
-    background: #4f46e5;
-    color: white;
-    width: 100%;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .analytics-main {
-    flex: 1;
-    margin-left: 2rem;
-  }
-  
-  .metrics-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .metric-card {
-    background: white;
-    flex: 1;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  }
-  
-  .metric-card h4 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .metric-card span {
-    font-size: 0.85rem;
-  }
-  
-  .positive {
-    color: green;
-  }
-  
-  .negative {
-    color: red;
-  }
-  
-  .charts {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .chart-card {
-    flex: 1;
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  .performance-table table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    font-size: 0.95rem;
-  }
-  
-  .performance-table th, .performance-table td {
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-    text-align: left;
-  }
-  
-  .badge {
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    color: white;
-  }
-  
-  .badge.expired {
-    background: #e74c3c;
-  }
-  
-  .badge.active {
-    background: #4f46e5;
-  }
-  
-  .badge.draft {
-    background: #999;
-  }
-  
-  .footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.85rem;
-    color: gray;
-  }
-  
+.analytics-page {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.analytics-page h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  flex: 1;
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.summary-card h3 {
+  color: #6366f1;
+}
+
+.chart-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}

@@ -1,116 +1,100 @@
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import './Settings.css';
-import { useNavigate } from 'react-router-dom';
+import { auth, db, storage } from '../firebaseConfig';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const Settings = () => {
-  const navigate = useNavigate();
-
-  const [merchant, setMerchant] = useState({
-    name: 'Alex Johnson',
-    email: 'alex@example.com',
-    phone: '+64 21 123 4567',
-    company: 'Johnson Retail Ltd.',
-    licenseNumber: 'NZDL-9384-1122',
-    authorized: true
+  const user = auth.currentUser;
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    license: '',
+    photoURL: ''
   });
+  const [preview, setPreview] = useState('');
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState('');
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [edited, setEdited] = useState(merchant);
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!user) return;
+      const docRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        setFormData({
+          name: data.name || '',
+          phone: data.phone || '',
+          license: data.license || '',
+          photoURL: data.photoURL || ''
+        });
+        setPreview(data.photoURL || '');
+      }
+    };
+    loadProfile();
+  }, [user]);
 
-  const handleChange = (e) => {
-    setEdited({ ...edited, [e.target.name]: e.target.value });
+  const handleChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = () => {
-    setMerchant(edited);
-    setIsEditing(false);
-    alert('Profile updated successfully!');
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let imageUrl = formData.photoURL;
+
+      if (file) {
+        const imageRef = ref(storage, `merchant-profiles/${user.uid}`);
+        await uploadBytes(imageRef, file);
+        imageUrl = await getDownloadURL(imageRef);
+      }
+
+      await updateDoc(doc(db, 'users', user.uid), {
+        name: formData.name,
+        phone: formData.phone,
+        license: formData.license,
+        photoURL: imageUrl
+      });
+
+      setMessage('Profile updated successfully!');
+    } catch (err) {
+      console.error(err);
+      setMessage('Error updating profile.');
+    }
   };
 
   return (
-    <>
-      {/* Dashboard-style Top Navbar */}
-      <header className="navbar">
-        <div className="logo">DealHub</div>
-        <nav className="nav-links">
-          <a href="/merchant-dashboard" className={window.location.pathname === "/merchant-dashboard" ? "active" : ""}>Dashboard</a>
-          <a href="/create-deal" className={window.location.pathname === "/create-deal" ? "active" : ""}>Add-Deals</a>
-          <a href="/analytics" className={window.location.pathname === "/analytics" ? "active" : ""}>Analytics</a>
-          <a href="/settings" className={window.location.pathname === "/settings" ? "active" : ""}>Settings</a>
-        </nav>
-        <div className="search-profile">
-          <input type="text" placeholder="Search..." />
-          <div className="profile-circle">A</div>
+    <div className="settings-page">
+      <h2>Merchant Profile</h2>
+
+      <form className="profile-form" onSubmit={handleSubmit}>
+        <div className="profile-pic">
+          {preview && <img src={preview} alt="Profile" />}
+          <input type="file" onChange={handleImage} />
         </div>
-      </header>
 
-      <div className="settings-container">
-        <h2>Merchant Settings</h2>
-        <div className="settings-card">
-          <div className="setting-row">
-            <label>Name:</label>
-            {isEditing ? (
-              <input name="name" value={edited.name} onChange={handleChange} />
-            ) : (
-              <span>{merchant.name}</span>
-            )}
-          </div>
+        <label>Name</label>
+        <input name="name" value={formData.name} onChange={handleChange} required />
 
-          <div className="setting-row">
-            <label>Email:</label>
-            {isEditing ? (
-              <input name="email" value={edited.email} onChange={handleChange} />
-            ) : (
-              <span>{merchant.email}</span>
-            )}
-          </div>
+        <label>Phone</label>
+        <input name="phone" value={formData.phone} onChange={handleChange} />
 
-          <div className="setting-row">
-            <label>Phone:</label>
-            {isEditing ? (
-              <input name="phone" value={edited.phone} onChange={handleChange} />
-            ) : (
-              <span>{merchant.phone}</span>
-            )}
-          </div>
+        <label>NZ Driving License</label>
+        <input name="license" value={formData.license} onChange={handleChange} />
 
-          <div className="setting-row">
-            <label>Company:</label>
-            {isEditing ? (
-              <input name="company" value={edited.company} onChange={handleChange} />
-            ) : (
-              <span>{merchant.company}</span>
-            )}
-          </div>
+        <button type="submit">Update Profile</button>
+      </form>
 
-          <div className="setting-row">
-            <label>NZ Driving License:</label>
-            <span>{merchant.licenseNumber}</span>
-          </div>
-
-          <div className="setting-row">
-            <label>Authorized by Admin:</label>
-            <span className={merchant.authorized ? "authorized" : "unauthorized"}>
-              {merchant.authorized ? "Authorized ✅" : "Pending ❌"}
-            </span>
-          </div>
-
-          <div className="setting-actions">
-            {isEditing ? (
-              <>
-                <button className="cancel" onClick={() => setIsEditing(false)}>Cancel</button>
-                <button className="save" onClick={handleUpdate}>Save</button>
-              </>
-            ) : (
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
-            )}
-          </div>
-        </div>
-      </div>
-      <footer className="footer">
-        <p>© 2024 DealHub Inc. All rights reserved.</p>
-      </footer>
-    </>
+      {message && <p className="success">{message}</p>}
+    </div>
   );
 };
 

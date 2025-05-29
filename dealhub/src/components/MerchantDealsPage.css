@@ -1,0 +1,64 @@
+/* src/components/MerchantDealsPage.css */
+
+.merchant-deals-page {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.merchant-deals-page h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.merchant-deals-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.merchant-deals-table th,
+.merchant-deals-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f1f1;
+  text-align: left;
+}
+
+.merchant-deals-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+  color: #374151;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status.approved {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.status.pending {
+  color: #d97706;
+  background: #fef3c7;
+}
+
+button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+button.delete {
+  color: red;
+}
