@@ -1,0 +1,39 @@
+.tracking-page {
+  padding: 40px 10%;
+  font-family: 'Segoe UI', sans-serif;
+}
+ 
+.tracking-page h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+ 
+.loading,
+.no-orders {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+}
+ 
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+ 
+.order-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+ 
+.order-card h4 {
+  margin-bottom: 10px;
+  color: #333;
+}
+ 
+.order-card p {
+  margin: 6px 0;
+  font-size: 14px;
+} 
