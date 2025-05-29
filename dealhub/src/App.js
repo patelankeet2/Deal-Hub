@@ -23,6 +23,9 @@ import PaymentPage from './components/PaymentPage';
 import FeedbackPage from './components/FeedbackPage';
 import OrderTrackingPage from './components/OrderTrackingPage';
 import CustomerProfilePage from './components/CustomerProfilePage.JS';
+import MerchantDealsPage from './components/MerchantDealsPage';
+import MerchantCustomersPage from './components/MerchantCustomersPage';
+
 
 
 function App() {
@@ -54,6 +57,8 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/merchant-register" element={<MerchantRegister />} />
         <Route path="/merchant-forgot-password" element={<MerchantForgotPassword />} />
+        <Route path="/merchant-deals" element={<MerchantDealsPage />} />
+        <Route path="/merchant-customers" element={<MerchantCustomersPage />} />
 
       </Routes>
     </Router>
