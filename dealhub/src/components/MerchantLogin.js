@@ -1,4 +1,3 @@
-// src/components/MerchantLogin.js
 
 import React, { useState } from "react";
 import "./MerchantLogin.css";
