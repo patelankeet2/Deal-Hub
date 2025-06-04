@@ -1,8 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import './AnalyticsPage.css';
-import { db } from '../firebaseConfig';
+import { db, auth } from '../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+
 import {
   Chart as ChartJS,
   BarElement,
@@ -19,9 +20,22 @@ ChartJS.register(BarElement, LineElement, CategoryScale, LinearScale, PointEleme
 
 const AnalyticsPage = () => {
   const [chartData, setChartData] = useState(null);
-  const merchantEmail = localStorage.getItem('userEmail');
+  const [merchantEmail, setMerchantEmail] = useState(null);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setMerchantEmail(user.email);
+      } else {
+        setMerchantEmail(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!merchantEmail) return;
+
     const fetchDeals = async () => {
       try {
         const q = query(collection(db, 'deals'), where('createdBy', '==', merchantEmail));
@@ -31,14 +45,11 @@ const AnalyticsPage = () => {
         const categoryCount = {};
         const dealLabels = [];
         const earningsData = [];
-
         let totalEarnings = 0;
 
         deals.forEach((deal) => {
-          // Count per category
           categoryCount[deal.category] = (categoryCount[deal.category] || 0) + 1;
 
-          // Approved deal earnings
           if (deal.approved) {
             const net = deal.price * (1 - deal.discount / 100);
             totalEarnings += net;

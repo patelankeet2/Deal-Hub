@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import "./MerchantRegister.css";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
 
 const MerchantRegister = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -15,19 +19,44 @@ const MerchantRegister = () => {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
+
     setError("");
-    // Registration logic
-    console.log("Merchant Registered:", formData);
-    navigate("/merchant-login");
+
+    try {
+      // Register the merchant
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      const user = userCredential.user;
+
+      // Save merchant profile in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: formData.name,
+        email: formData.email,
+        license: formData.license || null,
+        role: "merchant",
+        authorized: false, // Admin will approve later
+        createdAt: serverTimestamp()
+      });
+
+      alert("✅ Merchant registered! Please wait for admin approval.");
+      navigate("/merchant-login");
+    } catch (err) {
+      console.error("Registration Error:", err.message);
+      setError(err.message || "Failed to register.");
+    }
   };
 
   return (
@@ -36,6 +65,16 @@ const MerchantRegister = () => {
         <h2>Merchant Registration</h2>
         <p>Create an account to publish and track your deals.</p>
         <form onSubmit={handleSubmit}>
+          <label>Full Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="John Doe"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
           <label>Email Address</label>
           <input
             type="email"

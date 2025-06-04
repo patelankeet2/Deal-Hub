@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CreateDeal.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { addDoc, collection, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig';
 
 const CreateDeal = () => {
   const navigate = useNavigate();
@@ -31,6 +31,19 @@ const CreateDeal = () => {
     setLoading(true);
 
     try {
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert('Please login first.');
+        navigate('/merchant-login');
+        return;
+      }
+
+      // Fetch merchant name from users collection
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      const merchantName = userData?.name || 'Unknown Merchant';
+
       const dealData = {
         title: form.title,
         description: form.description,
@@ -42,6 +55,9 @@ const CreateDeal = () => {
         imageUrl: form.imageUrl,
         topDeal: true,
         createdAt: serverTimestamp(),
+        createdBy: user.email,
+        createdByName: merchantName,
+        approved: false,
       };
 
       await addDoc(collection(db, 'deals'), dealData);
@@ -57,19 +73,7 @@ const CreateDeal = () => {
 
   return (
     <>
-      <header className="navbar">
-        <div className="logo">DealHub</div>
-        <nav className="nav-links">
-          <a href="/merchant-dashboard" className={location.pathname === "/merchant-dashboard" ? "active" : ""}>Dashboard</a>
-          <a href="/create-deal" className={location.pathname === "/create-deal" ? "active" : ""}>Add-Deals</a>
-          <a href="/analytics">Analytics</a>
-          <a href="/settings">Settings</a>
-        </nav>
-        <div className="search-profile">
-          <input type="text" placeholder="Search deals..." />
-          <div className="profile-circle">M</div>
-        </div>
-      </header>
+      <header className="navbar"></header>
 
       <div className="create-deal-container">
         <h2>Create New Deal</h2>

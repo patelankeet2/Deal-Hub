@@ -1,17 +1,32 @@
-// src/components/MerchantDealsPage.js
-
 import React, { useEffect, useState } from 'react';
 import './MerchantDealsPage.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db, auth } from '../firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MerchantDealsPage = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const merchantEmail = localStorage.getItem('userEmail');
+  const [merchantEmail, setMerchantEmail] = useState(null);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setMerchantEmail(user.email);
+      } else {
+        setMerchantEmail(null);
+        setDeals([]);
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!merchantEmail) return;
+
     const fetchDeals = async () => {
       try {
         const q = query(collection(db, 'deals'), where('createdBy', '==', merchantEmail));
@@ -33,12 +48,12 @@ const MerchantDealsPage = () => {
 
   const handleEdit = (id) => {
     alert(`Edit deal with ID: ${id}`);
-    // Implement actual edit navigation or modal
+    // TODO: Implement modal or navigation to edit page
   };
 
   const handleDelete = (id) => {
     alert(`Delete deal with ID: ${id}`);
-    // Add deletion logic here
+    // TODO: Implement Firestore deletion logic
   };
 
   return (

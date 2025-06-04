@@ -1,25 +1,49 @@
 
 import React, { useEffect, useState } from 'react';
 import './MerchantCustomersPage.css';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { db, auth } from '../firebaseConfig';
+import { format } from 'date-fns';
 
 const MerchantCustomersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const merchantEmail = localStorage.getItem('userEmail');
+  const user = auth.currentUser;
 
   useEffect(() => {
     const fetchOrders = async () => {
+      if (!user) return;
       try {
         const q = query(
           collection(db, 'orders'),
-          where('merchantId', '==', merchantEmail),
           orderBy('createdAt', 'desc')
         );
         const snapshot = await getDocs(q);
-        const list = snapshot.docs.map(doc => doc.data());
-        setOrders(list);
+        const allOrders = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        // Extract only items where merchantId matches logged-in merchant
+        const merchantOrders = [];
+
+        allOrders.forEach(order => {
+          const { cart = [], shipping = {}, createdAt } = order;
+
+          cart.forEach(item => {
+            if (item.merchantId === user.email) {
+              merchantOrders.push({
+                customerName: shipping.name,
+                customerEmail: shipping.email || order.customerEmail,
+                dealTitle: item.title,
+                pricePaid: Math.floor(item.price * (1 - item.discount / 100)),
+                createdAt: createdAt?.toDate ? format(createdAt.toDate(), 'dd MMM yyyy, hh:mm a') : 'N/A'
+              });
+            }
+          });
+        });
+
+        setOrders(merchantOrders);
       } catch (error) {
         console.error('Error fetching customer orders:', error);
       } finally {
@@ -28,7 +52,7 @@ const MerchantCustomersPage = () => {
     };
 
     fetchOrders();
-  }, [merchantEmail]);
+  }, [user]);
 
   return (
     <div className="merchant-customers-page">
@@ -50,13 +74,13 @@ const MerchantCustomersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, i) => (
-              <tr key={i}>
+            {orders.map((order, index) => (
+              <tr key={index}>
                 <td>{order.customerName}</td>
                 <td>{order.customerEmail}</td>
                 <td>{order.dealTitle}</td>
                 <td>${order.pricePaid}</td>
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                <td>{order.createdAt}</td>
               </tr>
             ))}
           </tbody>

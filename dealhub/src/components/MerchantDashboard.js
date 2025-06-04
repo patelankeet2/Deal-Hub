@@ -1,14 +1,14 @@
-
 import React, { useEffect, useState } from 'react';
 import './MerchantDashboard.css';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../firebaseConfig';
+import { db, auth } from '../firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MerchantDashboard = () => {
   const navigate = useNavigate();
-  const merchantEmail = localStorage.getItem('userEmail');
+  const [merchantEmail, setMerchantEmail] = useState(null);
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [summary, setSummary] = useState({
@@ -18,7 +18,22 @@ const MerchantDashboard = () => {
     earnings: 0
   });
 
+  // Watch auth state to get merchant email
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setMerchantEmail(user.email);
+      } else {
+        navigate('/merchant-login');
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // Fetch merchant deals
+  useEffect(() => {
+    if (!merchantEmail) return;
+
     const fetchDeals = async () => {
       try {
         const q = query(collection(db, 'deals'), where('createdBy', '==', merchantEmail));
