@@ -51,3 +51,36 @@ All notable changes to this project will be documented in this file.
 - Admin deal approval flow to be refined in next version
 - Analytics dashboard and merchant earnings summary coming in v2.1.0
 - Prepare for possible Stripe integration in v2.2.0
+
+## [3.0.0] – 2025-06-05
+ 
+### Added
+- Quantity control with increment/decrement buttons in the cart (`+` / `-`)
+- Editable cart items with inline price updates based on quantity
+- Deal tracking per merchant: customer orders now include `merchantId`
+- "Edit" button added to cart for improved UX
+- Enhanced professional CSS for:
+  - Landing page (hero, trending, footer)
+  - Deals listing with category and search filters
+  - Deal details with back navigation
+  - Cart, Payment, and OrderTracking pages
+- Responsive UI across all pages including mobile and tablet support
+- All deal and order Firestore writes now include accurate user/merchant identifiers
+ 
+### Changed
+- Refactored Cart logic to persist quantity and dynamically update total
+- Updated `CartPage.js` and `CartPage.css` for professional layout and quantity logic
+- Improved `DealDetailsPage` with back-to-deals button
+- Revised `PaymentPage` to clearly separate shipping and payment sections
+- Added better loading and empty states to `OrderTrackingPage.js` and `MerchantCustomersPage.js`
+ 
+### Fixed
+- Fixed merchant deal ownership tracking by saving `merchantId` during order
+- Resolved cart quantity mismatch across refreshes and local storage
+- Eliminated layout overflow on smaller screens
+ 
+### Notes
+- Next release (v4.0.0) will include:
+  - Deal editing for merchants
+  - Deal approval system for admins
+  - Full earnings analytics with charts per merchant
