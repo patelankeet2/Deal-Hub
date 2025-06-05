@@ -49,6 +49,10 @@ const DealDetailsPage = () => {
     navigate('/cart');
   };
  
+  const handleBack = () => {
+    navigate('/deals');
+  };
+ 
   if (loading) return <div className="deal-details-loading">Loading...</div>;
   if (!deal) return <div className="deal-details-error">Deal not found.</div>;
  
@@ -56,6 +60,8 @@ const DealDetailsPage = () => {
  
   return (
     <div className="deal-details-page">
+      <button className="back-button" onClick={handleBack}>← Back to Deals</button>
+ 
       <div className="deal-details-container">
         <img src={deal.imageUrl} alt={deal.title} className="deal-image" />
         <div className="deal-info">
