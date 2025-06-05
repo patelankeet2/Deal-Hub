@@ -1,13 +1,14 @@
- 
 import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db, storage } from '../firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom';
  
 const LandingPage = () => {
   const [deals, setDeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
  
   useEffect(() => {
     const fetchDeals = async () => {
@@ -86,7 +87,9 @@ const LandingPage = () => {
                     ${Math.floor(deal.price * (1 - deal.discount / 100))}
                   </span>
                 </p>
-                <button>View Deal</button>
+                <button onClick={() => navigate(`/deal/${deal.id}`)}>
+                  View Deal
+                </button>
               </div>
             ))
           ) : (
