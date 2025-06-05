@@ -9,12 +9,16 @@ const AdminManageDeals = () => {
  
   useEffect(() => {
     const fetchDeals = async () => {
-      const snapshot = await getDocs(collection(db, 'deals'));
-      const dealList = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setDeals(dealList);
+      try {
+        const snapshot = await getDocs(collection(db, 'deals'));
+        const dealList = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setDeals(dealList);
+      } catch (err) {
+        console.error('Error fetching deals:', err);
+      }
     };
  
     fetchDeals();
@@ -55,7 +59,7 @@ const AdminManageDeals = () => {
               <td>{deal.title}</td>
               <td>{deal.category}</td>
               <td>{deal.price}</td>
-              <td>{deal.createdBy || "N/A"}</td>
+              <td>{deal.createdByName || deal.createdBy || 'N/A'}</td>
               <td>
                 <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
                   {deal.approved ? 'Approved' : 'Pending'}
