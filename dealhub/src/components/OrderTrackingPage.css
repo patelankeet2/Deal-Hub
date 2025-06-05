@@ -17,7 +17,7 @@
  
 .order-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
  
@@ -26,14 +26,31 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+ 
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
  
 .order-card h4 {
   margin-bottom: 10px;
   color: #333;
+  font-size: 16px;
 }
  
 .order-card p {
   margin: 6px 0;
   font-size: 14px;
-} 
+}
+ 
+.order-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+ 
+.order-card li {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
