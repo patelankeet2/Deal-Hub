@@ -34,6 +34,7 @@ import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import EditDealPage from './components/EditDealPage';
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="/analytics" element={<ProtectedRoute element={AnalyticsPage} allowedRoles={['merchant']} />} />
           <Route path="/settings" element={<ProtectedRoute element={Settings} allowedRoles={['merchant']} />} />
           <Route path="/merchant-deals" element={<ProtectedRoute element={MerchantDealsPage} allowedRoles={['merchant']} />} />
+          <Route path="/edit-deal/:dealId" element={<ProtectedRoute element={EditDealPage} allowedRoles={['merchant']}/>} />
           <Route path="/merchant-customers" element={<ProtectedRoute element={MerchantCustomersPage} allowedRoles={['merchant']} />} />
 
           {/* Protected routes for admin */}
