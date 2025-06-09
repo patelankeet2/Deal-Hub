@@ -8,7 +8,8 @@ const CartPage = () => {
  
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartItems(cart);
+    const cartWithQty = cart.map(item => ({ ...item, quantity: item.quantity || 1 }));
+    setCartItems(cartWithQty);
   }, []);
  
   const updateCart = (items) => {
@@ -17,8 +18,15 @@ const CartPage = () => {
   };
  
   const handleRemove = (id) => {
-    const filtered = cartItems.filter((item) => item.id !== id);
+    const filtered = cartItems.filter(item => item.id !== id);
     updateCart(filtered);
+  };
+ 
+  const handleQuantityChange = (id, delta) => {
+    const updated = cartItems.map(item =>
+      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+    );
+    updateCart(updated);
   };
  
   const handleClearCart = () => {
@@ -35,28 +43,43 @@ const CartPage = () => {
  
   const total = cartItems.reduce((sum, item) => {
     const discounted = Math.floor(item.price * (1 - item.discount / 100));
-    return sum + discounted;
+    return sum + discounted * item.quantity;
   }, 0);
  
   return (
     <div className="cart-page">
       <h2>Your Cart</h2>
+ 
+      <button className="back-to-deals" onClick={() => navigate('/deals')}>
+        ⬅ Add More Deals
+      </button>
+ 
       {cartItems.length === 0 ? (
         <p className="empty-cart">Your cart is empty.</p>
       ) : (
         <>
           <div className="cart-list">
-            {cartItems.map((item) => (
-              <div className="cart-item" key={item.id}>
-                <img src={item.imageUrl} alt={item.title} />
-                <div className="cart-details">
-                  <h4>{item.title}</h4>
-                  <p>Discounted: ${Math.floor(item.price * (1 - item.discount / 100))}</p>
-                  <button onClick={() => handleRemove(item.id)}>Remove</button>
+            {cartItems.map((item) => {
+              const discounted = Math.floor(item.price * (1 - item.discount / 100));
+              return (
+                <div className="cart-item" key={item.id}>
+                  <img src={item.imageUrl} alt={item.title} />
+                  <div className="cart-details">
+                    <h4>{item.title}</h4>
+                    <p>Price: ${discounted}</p>
+                    <div className="qty-controls">
+                      <button onClick={() => handleQuantityChange(item.id, -1)}>-</button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
+                    </div>
+                    <p>Subtotal: ${discounted * item.quantity}</p>
+                    <button className="remove-btn" onClick={() => handleRemove(item.id)}>Remove</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+ 
           <div className="cart-summary">
             <h3>Total: ${total}</h3>
             <div className="cart-actions">
