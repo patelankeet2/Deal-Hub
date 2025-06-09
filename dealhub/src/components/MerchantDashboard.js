@@ -18,7 +18,7 @@ const MerchantDashboard = () => {
     earnings: 0
   });
 
-  // Watch auth state to get merchant email
+  // Monitor login status
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -30,7 +30,6 @@ const MerchantDashboard = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Fetch merchant deals
   useEffect(() => {
     if (!merchantEmail) return;
 
@@ -43,24 +42,29 @@ const MerchantDashboard = () => {
 
         snapshot.forEach(doc => {
           const data = doc.data();
-          const status = data.approved ? 'Approved' : 'Pending';
-          const earning = data.approved ? (data.price * (1 - data.discount / 100)) : 0;
+          const isApproved = data.approved;
+          const price = Number(data.price) || 0;
+          const discount = Number(data.discount) || 0;
+
+          const discountedPrice = price * (1 - discount / 100);
+          const finalProfit = discountedPrice - discountedPrice * 0.05;
+
+          if (isApproved) {
+            approved++;
+            earnings += finalProfit;
+          } else {
+            pending++;
+          }
 
           dealsData.push({
             id: doc.id,
             title: data.title,
-            price: data.price,
+            price,
+            discount,
             category: data.category,
-            status,
-            earning
+            status: isApproved ? 'Approved' : 'Pending',
+            earning: isApproved ? finalProfit : 0
           });
-
-          if (data.approved) {
-            approved++;
-            earnings += earning;
-          } else {
-            pending++;
-          }
         });
 
         setDeals(dealsData);
@@ -107,7 +111,7 @@ const MerchantDashboard = () => {
           <div className="stat-card">
             <p>Total Earnings</p>
             <h3>${summary.earnings.toFixed(2)}</h3>
-            <span>From approved deals</span>
+            <span>From approved deals (after 5% admin fee)</span>
           </div>
         </div>
 
@@ -124,6 +128,7 @@ const MerchantDashboard = () => {
               <tr>
                 <th>Deal Title</th>
                 <th>Price ($)</th>
+                <th>Discount (%)</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Earning ($)</th>
@@ -135,11 +140,12 @@ const MerchantDashboard = () => {
                 <tr key={deal.id}>
                   <td>{deal.title}</td>
                   <td>{deal.price}</td>
+                  <td>{deal.discount}</td>
                   <td>{deal.category}</td>
                   <td>
                     <span className={`status ${deal.status.toLowerCase()}`}>{deal.status}</span>
                   </td>
-                  <td>{deal.earning.toFixed(2)}</td>
+                  <td>${deal.earning.toFixed(2)}</td>
                   <td>
                     <button onClick={() => handleEdit(deal.title)}><FaEdit /></button>
                     <button onClick={() => handleDelete(deal.title)} className="delete"><FaTrash /></button>
