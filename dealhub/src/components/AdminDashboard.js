@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
  
 const AdminDashboard = () => {
@@ -59,32 +59,32 @@ const AdminDashboard = () => {
  
   return (
     <div className="admin-dashboard">
-      <h2>Admin Dashboard</h2>
+      <h2>📊 Admin Dashboard</h2>
  
-      <div className="admin-stats">
-        <div className="stat-box">
+      <div className="admin-grid">
+        <div className="admin-card">
           <p>Total Users</p>
           <h3>{stats.totalUsers}</h3>
         </div>
-        <div className="stat-box">
+        <div className="admin-card">
           <p>Total Merchants</p>
           <h3>{stats.totalMerchants}</h3>
         </div>
-        <div className="stat-box">
+        <div className="admin-card">
           <p>Total Deals</p>
           <h3>{stats.totalDeals}</h3>
         </div>
-        <div className="stat-box">
+        <div className="admin-card">
           <p>Approved Deals</p>
           <h3>{stats.approvedDeals}</h3>
         </div>
-        <div className="stat-box">
+        <div className="admin-card highlight">
           <p>Total Earnings (5%)</p>
           <h3>${stats.totalEarnings.toFixed(2)}</h3>
         </div>
       </div>
  
-      <footer className="footer">
+      <footer className="admin-footer">
         <p>© 2025 DealHub Admin Panel</p>
       </footer>
     </div>

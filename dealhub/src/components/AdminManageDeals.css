@@ -51,7 +51,7 @@ button.reject {
 }
  
 button.delete {
-  background: #ef4444;
+  background: rgb(129, 122, 122);
   color: white;
 }
  
@@ -70,4 +70,19 @@ button.delete {
   margin-top: 2rem;
   font-size: 0.85rem;
   color: gray;
+}
+ 
+button.toggle-top {
+  background: #3b82f6;
+  color: white;
+}
+ 
+.top-yes {
+  color: #22c55e;
+  font-weight: bold;
+}
+ 
+.top-no {
+  color: #ef4444;
+  font-weight: bold;
 }

@@ -31,45 +31,53 @@ const AdminManageUsers = () => {
   };
  
   const handleDelete = async (userId) => {
-    await deleteDoc(doc(db, 'users', userId));
-    setRefresh(prev => !prev);
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      await deleteDoc(doc(db, 'users', userId));
+      setRefresh(prev => !prev);
+    }
   };
  
   return (
     <div className="manage-users-container">
-      <h2>Manage Users</h2>
-      <table className="users-table">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Authorized</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>
-                {user.role === 'merchant'
-                  ? user.isAuthorized ? '✅ Yes' : '❌ No'
-                  : 'N/A'}
-              </td>
-              <td>
-                {user.role === 'merchant' && (
-                  <>
-                    <button className="approve" onClick={() => handleApprove(user.id)}>Approve</button>
-                    <button className="reject" onClick={() => handleReject(user.id)}>Reject</button>
-                  </>
-                )}
-                <button className="delete" onClick={() => handleDelete(user.id)}>Delete</button>
-              </td>
+      <h2>👥 Manage Users</h2>
+      <div className="table-wrapper">
+        <table className="users-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>License</th>
+              <th>Authorized</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.id}>
+                <td>{user.name || 'N/A'}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>{user.role === 'merchant' ? (user.license || 'Not Provided') : 'N/A'}</td>
+                <td>
+                  {user.role === 'merchant'
+                    ? user.isAuthorized ? '✅ Yes' : '❌ No'
+                    : 'N/A'}
+                </td>
+                <td>
+                  {user.role === 'merchant' && (
+                    <>
+                      <button className="approve" onClick={() => handleApprove(user.id)}>Approve</button>
+                      <button className="reject" onClick={() => handleReject(user.id)}>Reject</button>
+                    </>
+                  )}
+                  <button className="delete" onClick={() => handleDelete(user.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
  
       <footer className="footer">
         <p>© 2025 DealHub Admin Panel</p>

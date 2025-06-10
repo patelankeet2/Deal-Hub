@@ -39,6 +39,11 @@ const AdminManageDeals = () => {
     setRefresh(prev => !prev);
   };
  
+  const toggleTopDeal = async (id, currentStatus) => {
+    await updateDoc(doc(db, 'deals', id), { topDeal: !currentStatus });
+    setRefresh(prev => !prev);
+  };
+ 
   return (
     <div className="manage-deals-container">
       <h2>Manage Deals</h2>
@@ -50,6 +55,7 @@ const AdminManageDeals = () => {
             <th>Price ($)</th>
             <th>Merchant</th>
             <th>Status</th>
+            <th>Top Deal</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -66,8 +72,16 @@ const AdminManageDeals = () => {
                 </span>
               </td>
               <td>
+                <span className={deal.topDeal ? 'top-yes' : 'top-no'}>
+                  {deal.topDeal ? 'Yes' : 'No'}
+                </span>
+              </td>
+              <td>
                 <button className="approve" onClick={() => handleApprove(deal.id)}>Approve</button>
                 <button className="reject" onClick={() => handleReject(deal.id)}>Reject</button>
+                <button className="toggle-top" onClick={() => toggleTopDeal(deal.id, deal.topDeal)}>
+                  {deal.topDeal ? 'Unset Top' : 'Set Top'}
+                </button>
                 <button className="delete" onClick={() => handleDelete(deal.id)}>Delete</button>
               </td>
             </tr>
