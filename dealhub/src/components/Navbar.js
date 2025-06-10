@@ -61,6 +61,7 @@ const Navbar = () => {
             <Link to="/admin-dashboard">Dashboard</Link>
             <Link to="/admin-manage-users">Manage Users</Link>
             <Link to="/admin-manage-deals">Manage Deals</Link>
+            <Link to="/admin-manage-category">Manage Category</Link>
             <Link to="/admin-earnings">Earnings</Link>
             <Link to="/admin-profile">Profile</Link>
             <button onClick={handleLogout}>Logout</button>

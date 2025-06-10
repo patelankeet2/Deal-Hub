@@ -1,44 +1,58 @@
 .admin-dashboard {
-  font-family: 'Segoe UI', sans-serif;
-  padding: 2rem;
-  background: #f9fafb;
+  font-family: 'Poppins', sans-serif;
+  background: #f0f4f8;
   min-height: 100vh;
-}
- 
-.admin-dashboard h2 {
-  margin-bottom: 2rem;
+  padding: 2rem;
   color: #333;
 }
  
-.admin-stats {
+.admin-dashboard h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  color: #111827;
+}
+ 
+.admin-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
 }
  
-.stat-box {
-  background: white;
-  padding: 1.5rem;
+.admin-card {
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
   border: 1px solid #e5e7eb;
 }
  
-.stat-box p {
+.admin-card:hover {
+  transform: translateY(-4px);
+}
+ 
+.admin-card p {
   font-size: 14px;
-  color: #666;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
 }
  
-.stat-box h3 {
-  font-size: 24px;
-  margin-top: 0.5rem;
-  color: #222;
+.admin-card h3 {
+  font-size: 28px;
+  color: #111827;
+  font-weight: 600;
 }
  
-.footer {
-  text-align: center;
+.admin-card.highlight {
+  background: #fef3c7;
+  border: 1px solid #facc15;
+}
+ 
+.admin-footer {
   margin-top: 3rem;
-  font-size: 0.85rem;
-  color: gray;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #9ca3af;
 }
