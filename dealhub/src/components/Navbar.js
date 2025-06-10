@@ -49,7 +49,6 @@ const Navbar = () => {
             <Link to="/create-deal">Create Deal</Link>
             <Link to="/analytics">Analytics</Link>
             <Link to="/merchant-deals">My Deals</Link>
-            <Link to="/admin-manage-category">Manage Category</Link>
             <Link to="/merchant-customers">Customers</Link>
             <Link to="/settings">Settings</Link>
             <button onClick={handleLogout}>Logout</button>
@@ -62,6 +61,7 @@ const Navbar = () => {
             <Link to="/admin-dashboard">Dashboard</Link>
             <Link to="/admin-manage-users">Manage Users</Link>
             <Link to="/admin-manage-deals">Manage Deals</Link>
+            <Link to="/admin-manage-category">Manage Category</Link>
             <Link to="/admin-earnings">Earnings</Link>
             <Link to="/admin-profile">Profile</Link>
             <button onClick={handleLogout}>Logout</button>
