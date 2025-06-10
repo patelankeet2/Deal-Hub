@@ -49,6 +49,7 @@ const Navbar = () => {
             <Link to="/create-deal">Create Deal</Link>
             <Link to="/analytics">Analytics</Link>
             <Link to="/merchant-deals">My Deals</Link>
+            <Link to="/admin-manage-category">Manage Category</Link>
             <Link to="/merchant-customers">Customers</Link>
             <Link to="/settings">Settings</Link>
             <button onClick={handleLogout}>Logout</button>
