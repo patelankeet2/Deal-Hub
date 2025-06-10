@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './CreateDeal.css';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { addDoc, collection, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { addDoc, collection, serverTimestamp, doc, getDoc, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 
 const CreateDeal = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [form, setForm] = useState({
     title: '',
@@ -20,6 +19,22 @@ const CreateDeal = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  // Fetch categories from Firestore
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'categories'));
+        const cats = snapshot.docs.map(doc => doc.data().name);
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error loading categories:', error.message);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,11 +68,11 @@ const CreateDeal = () => {
         startDate: form.startDate,
         endDate: form.endDate,
         imageUrl: form.imageUrl,
-        topDeal: true,
+        topDeal: false,
+        approved: false,
         createdAt: serverTimestamp(),
         createdBy: user.email,
         createdByName: merchantName,
-        approved: false,
       };
 
       await addDoc(collection(db, 'deals'), dealData);
@@ -93,10 +108,9 @@ const CreateDeal = () => {
           <label>Category</label>
           <select name="category" value={form.category} onChange={handleChange} required>
             <option value="">Select category</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Food">Food</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Books">Books</option>
+            {categories.map((cat, idx) => (
+              <option key={idx} value={cat}>{cat}</option>
+            ))}
           </select>
 
           <label>Start Date</label>

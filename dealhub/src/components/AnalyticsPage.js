@@ -51,10 +51,11 @@ const AnalyticsPage = () => {
           categoryCount[deal.category] = (categoryCount[deal.category] || 0) + 1;
 
           if (deal.approved) {
-            const net = deal.price * (1 - deal.discount / 100);
-            totalEarnings += net;
+            const profit = deal.price * (1 - deal.discount / 100);
+            const merchantEarning = profit * 0.95; // Deduct 5% admin commission
+            totalEarnings += merchantEarning;
             dealLabels.push(deal.title);
-            earningsData.push(net);
+            earningsData.push(merchantEarning);
           }
         });
 
@@ -67,7 +68,7 @@ const AnalyticsPage = () => {
               {
                 label: 'Deals per Category',
                 data: Object.values(categoryCount),
-                backgroundColor: '#6366f1'
+                backgroundColor: '#4f46e5',
               }
             ]
           },
@@ -75,11 +76,13 @@ const AnalyticsPage = () => {
             labels: dealLabels,
             datasets: [
               {
-                label: 'Earnings per Deal',
+                label: 'Earnings per Deal (after 5% fee)',
                 data: earningsData,
-                fill: false,
-                borderColor: '#10b981',
-                tension: 0.3
+                fill: true,
+                borderColor: '#059669',
+                backgroundColor: 'rgba(5,150,105,0.2)',
+                tension: 0.4,
+                pointBackgroundColor: '#059669'
               }
             ]
           }
@@ -92,9 +95,39 @@ const AnalyticsPage = () => {
     fetchDeals();
   }, [merchantEmail]);
 
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: 'top' },
+      tooltip: { mode: 'index', intersect: false },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { stepSize: 1 },
+        grid: { color: '#e5e7eb' },
+        title: {
+          display: true,
+          text: 'Count / Earnings ($)',
+          color: '#374151',
+          font: { weight: 'bold' }
+        }
+      },
+      x: {
+        grid: { display: false },
+        title: {
+          display: true,
+          text: 'Categories / Deals',
+          color: '#374151',
+          font: { weight: 'bold' }
+        }
+      }
+    }
+  };
+
   return (
     <div className="analytics-page">
-      <h2>Deal Performance Analytics</h2>
+      <h2>📊 Deal Performance Analytics</h2>
 
       {!chartData ? (
         <p>Loading data...</p>
@@ -108,17 +141,18 @@ const AnalyticsPage = () => {
             <div className="summary-card">
               <h3>Total Earnings</h3>
               <p>${chartData.totalEarnings.toFixed(2)}</p>
+              <span className="note">(* after 5% admin fee)</span>
             </div>
           </div>
 
           <div className="chart-container">
-            <h4>Deals by Category</h4>
-            <Bar data={chartData.categoryBar} />
+            <h4>📂 Deals by Category</h4>
+            <Bar data={chartData.categoryBar} options={chartOptions} />
           </div>
 
           <div className="chart-container">
-            <h4>Earnings per Deal</h4>
-            <Line data={chartData.earningsLine} />
+            <h4>💰 Earnings per Deal</h4>
+            <Line data={chartData.earningsLine} options={chartOptions} />
           </div>
         </>
       )}
