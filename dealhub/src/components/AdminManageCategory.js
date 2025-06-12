@@ -41,59 +41,69 @@ const AdminManageCategory = () => {
   };
  
   return (
-    <div className="manage-deals-container">
-      <h2>Manage Categories</h2>
+    <div className="admin-category-container">
+      <h2>📂 Manage Deal Categories</h2>
  
-      <div style={{ marginBottom: '20px' }}>
+      <div className="add-category">
         <input
           type="text"
-          placeholder="New Category Name"
+          placeholder="Add new category"
           value={newCat}
           onChange={(e) => setNewCat(e.target.value)}
         />
-        <button onClick={handleAdd}>Add Category</button>
+        <button className="btn add" onClick={handleAdd}>Add</button>
       </div>
  
-      <table className="deals-table">
-        <thead>
-          <tr>
-            <th>Category Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map(cat => (
-            <tr key={cat.id}>
-              <td>
-                {editMode === cat.id ? (
-                  <input
-                    value={editedName}
-                    onChange={(e) => setEditedName(e.target.value)}
-                  />
-                ) : (
-                  cat.name
-                )}
-              </td>
-              <td>
-                {editMode === cat.id ? (
-                  <>
-                    <button onClick={() => handleEdit(cat.id)}>Save</button>
-                    <button onClick={() => setEditMode(null)}>Cancel</button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => {
-                      setEditMode(cat.id);
-                      setEditedName(cat.name);
-                    }}>Edit</button>
-                    <button onClick={() => handleDelete(cat.id)}>Delete</button>
-                  </>
-                )}
-              </td>
+      <div className="category-table-wrapper">
+        <table className="category-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {categories.map(cat => (
+              <tr key={cat.id}>
+                <td>
+                  {editMode === cat.id ? (
+                    <input
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      className="edit-input"
+                    />
+                  ) : (
+                    cat.name
+                  )}
+                </td>
+                <td>
+                  {editMode === cat.id ? (
+                    <>
+                      <button className="btn save" onClick={() => handleEdit(cat.id)}>Save</button>
+                      <button className="btn cancel" onClick={() => setEditMode(null)}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="btn edit"
+                        onClick={() => {
+                          setEditMode(cat.id);
+                          setEditedName(cat.name);
+                        }}
+                      >Edit</button>
+                      <button className="btn delete" onClick={() => handleDelete(cat.id)}>Delete</button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+ 
+      <footer className="footer">
+        <p>© {new Date().getFullYear()} DealHub Admin Panel</p>
+      </footer>
     </div>
   );
 };
