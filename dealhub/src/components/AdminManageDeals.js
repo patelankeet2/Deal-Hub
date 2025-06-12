@@ -6,6 +6,7 @@ import { db } from '../firebaseConfig';
 const AdminManageDeals = () => {
   const [deals, setDeals] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
  
   useEffect(() => {
     const fetchDeals = async () => {
@@ -44,9 +45,25 @@ const AdminManageDeals = () => {
     setRefresh(prev => !prev);
   };
  
+  const filteredDeals = deals.filter(deal =>
+    deal.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    deal.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    deal.createdByName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+ 
   return (
     <div className="admin-deals-container">
       <h2>🎯 Admin Deal Management</h2>
+ 
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by title, category, or merchant..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+ 
       <div className="responsive-table">
         <table className="deals-table">
           <thead>
@@ -61,7 +78,7 @@ const AdminManageDeals = () => {
             </tr>
           </thead>
           <tbody>
-            {deals.map(deal => (
+            {filteredDeals.map(deal => (
               <tr key={deal.id}>
                 <td>{deal.title}</td>
                 <td>{deal.category}</td>
