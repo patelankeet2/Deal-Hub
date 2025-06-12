@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip
+} from 'recharts';
  
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -11,9 +20,18 @@ const AdminDashboard = () => {
     approvedDeals: 0,
     totalEarnings: 0
   });
+  const [adminProfile, setAdminProfile] = useState({ name: '', photo: '' });
+  const [earningsData, setEarningsData] = useState([]);
+ 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
  
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchData = async () => {
       try {
         const usersSnap = await getDocs(collection(db, 'users'));
         const dealsSnap = await getDocs(collection(db, 'deals'));
@@ -24,20 +42,34 @@ const AdminDashboard = () => {
         let approvedDeals = 0;
         let totalEarnings = 0;
  
+        const emailToName = {};
         usersSnap.forEach(doc => {
-          const data = doc.data();
+          const user = doc.data();
           totalUsers++;
-          if (data.role === 'merchant') totalMerchants++;
+          if (user.role === 'merchant') totalMerchants++;
+          emailToName[user.email] = user.name || 'Unnamed';
+          if (doc.id === auth.currentUser?.uid) {
+            setAdminProfile({
+              name: user.name || 'Admin',
+              photo: user.photo || '/default-avatar.png'
+            });
+          }
         });
+ 
+        const earningsList = [];
  
         dealsSnap.forEach(doc => {
           const deal = doc.data();
           totalDeals++;
           if (deal.approved) {
             approvedDeals++;
-            const netPrice = deal.price * (1 - deal.discount / 100);
-            const adminCommission = netPrice * 0.05;
-            totalEarnings += adminCommission;
+            const net = deal.price * (1 - deal.discount / 100);
+            const commission = net * 0.05;
+            totalEarnings += commission;
+            earningsList.push({
+              title: deal.title.length > 18 ? deal.title.slice(0, 15) + '...' : deal.title,
+              commission: parseFloat(commission.toFixed(2))
+            });
           }
         });
  
@@ -49,17 +81,30 @@ const AdminDashboard = () => {
           totalEarnings
         });
  
+        setEarningsData(
+          earningsList.sort((a, b) => b.commission - a.commission).slice(0)
+        );
+ 
       } catch (error) {
-        console.error("Error loading dashboard stats:", error);
+        console.error('Error loading admin dashboard:', error);
       }
     };
  
-    fetchStats();
+    fetchData();
   }, []);
  
   return (
     <div className="admin-dashboard">
-      <h2>📊 Admin Dashboard</h2>
+      <div className="admin-header">
+        <div className="admin-greeting">
+          <h2>{getGreeting()}, {adminProfile.name}!</h2>
+        </div>
+        <img
+          src={adminProfile.photo || '/default-avatar.png'}
+          alt="Admin Avatar"
+          className="admin-avatar"
+        />
+      </div>
  
       <div className="admin-grid">
         <div className="admin-card">
@@ -84,8 +129,28 @@ const AdminDashboard = () => {
         </div>
       </div>
  
-      <footer className="admin-footer">
-        <p>© 2025 DealHub Admin Panel</p>
+      <div className="admin-chart">
+        <h3>📈 Earnings per Approved Deal</h3>
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={earningsData} margin={{ top: 20, bottom: 60 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="title"
+              angle={-45}
+              textAnchor="end"
+              interval={0}
+              height={70}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="commission" fill="#6366f1" radius={[6, 6, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+ 
+      <footer className="footer">
+        <p>© {new Date().getFullYear()} DealHub Admin Panel</p>
       </footer>
     </div>
   );

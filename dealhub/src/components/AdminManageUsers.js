@@ -6,6 +6,7 @@ import { db } from '../firebaseConfig';
 const AdminManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
  
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,9 +38,25 @@ const AdminManageUsers = () => {
     }
   };
  
+  const filteredUsers = users.filter(
+    user =>
+      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+ 
   return (
     <div className="manage-users-container">
       <h2>👥 Manage Users</h2>
+ 
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by name or email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+ 
       <div className="table-wrapper">
         <table className="users-table">
           <thead>
@@ -53,7 +70,7 @@ const AdminManageUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {filteredUsers.map(user => (
               <tr key={user.id}>
                 <td>{user.name || 'N/A'}</td>
                 <td>{user.email}</td>
@@ -65,13 +82,15 @@ const AdminManageUsers = () => {
                     : 'N/A'}
                 </td>
                 <td>
-                  {user.role === 'merchant' && (
-                    <>
-                      <button className="approve" onClick={() => handleApprove(user.id)}>Approve</button>
-                      <button className="reject" onClick={() => handleReject(user.id)}>Reject</button>
-                    </>
-                  )}
-                  <button className="delete" onClick={() => handleDelete(user.id)}>Delete</button>
+                  <div className="button-group">
+                    {user.role === 'merchant' && (
+                      <>
+                        <button className="approve" onClick={() => handleApprove(user.id)}>Approve</button>
+                        <button className="reject" onClick={() => handleReject(user.id)}>Reject</button>
+                      </>
+                    )}
+                    <button className="delete" onClick={() => handleDelete(user.id)}>Delete</button>
+                  </div>
                 </td>
               </tr>
             ))}
