@@ -41,36 +41,39 @@ const AdminEarnings = () => {
  
   return (
     <div className="earnings-container">
-      <h2>Admin Earnings</h2>
-      <table className="earnings-table">
-        <thead>
-          <tr>
-            <th>Deal Title</th>
-            <th>Merchant</th>
-            <th>Price</th>
-            <th>Discount (%)</th>
-            <th>5% Commission</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deals.map(deal => (
-            <tr key={deal.id}>
-              <td>{deal.title}</td>
-              <td>{deal.merchant}</td>
-              <td>${deal.price.toFixed(2)}</td>
-              <td>{deal.discount}%</td>
-              <td>${deal.commission.toFixed(2)}</td>
+      <h2>💼 Admin Earnings Overview</h2>
+      <div className="table-wrapper">
+        <table className="earnings-table">
+          <thead>
+            <tr>
+              <th>Deal Title</th>
+              <th>Merchant</th>
+              <th>Original Price</th>
+              <th>Discount (%)</th>
+              <th>5% Commission</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {deals.map(deal => (
+              <tr key={deal.id}>
+                <td>{deal.title}</td>
+                <td>{deal.merchant}</td>
+                <td>${deal.price.toFixed(2)}</td>
+                <td>{deal.discount}%</td>
+                <td>${deal.commission.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
  
       <div className="total-box">
-        Total Commission Earned: <strong>${totalCommission.toFixed(2)}</strong>
+        <span>Total Commission Earned:</span>
+        <strong>${totalCommission.toFixed(2)}</strong>
       </div>
  
       <footer className="footer">
-        <p>© 2025 DealHub Admin Panel</p>
+        © {new Date().getFullYear()} DealHub Admin Panel
       </footer>
     </div>
   );
