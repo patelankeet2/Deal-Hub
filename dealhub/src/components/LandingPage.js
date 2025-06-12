@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 import { db, storage, auth } from '../firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -11,6 +18,7 @@ const LandingPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [greeting, setGreeting] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const navigate = useNavigate();
  
   useEffect(() => {
@@ -34,7 +42,7 @@ const LandingPage = () => {
             try {
               imageUrl = await getDownloadURL(ref(storage, data.imagePath));
             } catch (err) {
-              console.warn('⚠️ Could not fetch image from storage:', err.message);
+              console.warn('⚠️ Could not fetch image:', err.message);
             }
           }
  
@@ -63,6 +71,7 @@ const LandingPage = () => {
           const data = userSnap.data();
           if (data.role === 'customer') {
             setCustomerName(data.name || 'Customer');
+            setAvatarUrl(data.imageUrl || '');
  
             const hour = new Date().getHours();
             if (hour < 12) setGreeting('Good Morning');
@@ -90,14 +99,17 @@ const LandingPage = () => {
         </div>
       </section>
  
-      {/* Greeting */}
+      {/* Greeting with Avatar */}
       {customerName && greeting && (
         <div className="greeting-bar">
-          <p>{greeting}, <strong>{customerName}</strong> 👋</p>
+          {avatarUrl && <img src={avatarUrl} alt="avatar" className="avatar" />}
+          <p>
+            {greeting}, <strong>{customerName}</strong> 👋
+          </p>
         </div>
       )}
  
-      {/* Search Bar */}
+      {/* Search */}
       <div className="search-bar">
         <input
           type="text"
@@ -115,16 +127,16 @@ const LandingPage = () => {
             filteredDeals.map((deal) => (
               <div className="deal-card" key={deal.id}>
                 <img src={deal.imageUrl} alt={deal.title} />
-                <h4>{deal.title}</h4>
-                <p className="price">
-                  <span className="old-price">${deal.price}</span>{' '}
-                  <span className="new-price">
-                    ${Math.floor(deal.price * (1 - deal.discount / 100))}
-                  </span>
-                </p>
-                <button onClick={() => navigate(`/deal/${deal.id}`)}>
-                  View Deal
-                </button>
+                <div className="deal-info">
+                  <h4>{deal.title}</h4>
+                  <p className="price">
+                    <span className="old-price">${deal.price}</span>{' '}
+                    <span className="new-price">
+                      ${Math.floor(deal.price * (1 - deal.discount / 100))}
+                    </span>
+                  </p>
+                  <button onClick={() => navigate(`/deal/${deal.id}`)}>View Deal</button>
+                </div>
               </div>
             ))
           ) : (
