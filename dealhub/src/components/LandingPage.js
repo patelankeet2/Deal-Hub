@@ -13,7 +13,11 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchDeals = async () => {
       try {
-        const q = query(collection(db, 'deals'), where('topDeal', '==', true));
+        const q = query(
+          collection(db, 'deals'),
+          where('topDeal', '==', true),
+          where('approved', '==', true) // ✅ Only approved deals
+        );
         const snapshot = await getDocs(q);
         const result = [];
  
@@ -21,7 +25,6 @@ const LandingPage = () => {
           const data = docSnap.data();
           let imageUrl = '';
  
-          // Prefer direct imageUrl if it exists
           if (data.imageUrl) {
             imageUrl = data.imageUrl;
           } else if (data.imagePath) {

@@ -3,6 +3,7 @@ import './PaymentPage.css';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebaseConfig';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { QRCodeCanvas } from 'qrcode.react';
  
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -72,10 +73,6 @@ const PaymentPage = () => {
  
       localStorage.removeItem('cart');
       setPaid(true);
- 
-      setTimeout(() => {
-        navigate('/feedback');
-      }, 4000);
     } catch (error) {
       console.error("Error saving order:", error);
       alert("❌ Failed to process payment.");
@@ -88,9 +85,23 @@ const PaymentPage = () => {
  
       {paid ? (
         <div className="qr-section">
-          <p>Thank you for your purchase!</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?data=feedback&size=160x160" alt="QR Code" />
-          <p>Scan to leave feedback</p>
+          <p>🎉 Thank you for your purchase!</p>
+          <QRCodeCanvas value="http://localhost:3000/feedback" size={160} />
+          <p>📱 Scan this QR code to give feedback</p>
+          <button
+            onClick={() => navigate('/feedback')}
+            style={{
+              marginTop: '10px',
+              padding: '10px 20px',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Or Click Here to Give Feedback
+          </button>
         </div>
       ) : (
         <form className="payment-form" onSubmit={handleSubmit}>
