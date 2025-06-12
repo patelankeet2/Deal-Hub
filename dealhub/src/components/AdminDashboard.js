@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { db, auth } from '../firebaseConfig';
 import {
   BarChart,
   Bar,
@@ -21,6 +21,7 @@ const AdminDashboard = () => {
     totalEarnings: 0
   });
   const [earningsData, setEarningsData] = useState([]);
+  const [adminName, setAdminName] = useState('');
  
   useEffect(() => {
     const fetchStats = async () => {
@@ -57,7 +58,6 @@ const AdminDashboard = () => {
           }
         });
  
-        // Sort & take top 10 earning deals (optional but improves clarity)
         const topEarnings = earningsList
           .sort((a, b) => b.commission - a.commission)
           .slice(0, 15);
@@ -72,16 +72,31 @@ const AdminDashboard = () => {
  
         setEarningsData(topEarnings);
       } catch (error) {
-        console.error('Error loading dashboard stats:', error);
+        console.error('Error loading stats:', error);
+      }
+    };
+ 
+    const fetchAdminName = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          setAdminName(userDoc.data().name || 'Admin');
+        }
       }
     };
  
     fetchStats();
+    fetchAdminName();
   }, []);
  
   return (
     <div className="admin-dashboard">
       <div className="dashboard-wrapper">
+        {adminName && (
+          <p className="admin-greeting">👋 Welcome, {adminName}!</p>
+        )}
+ 
         <h2>📊 Admin Dashboard Overview</h2>
  
         <div className="admin-grid">
