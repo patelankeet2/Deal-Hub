@@ -16,7 +16,7 @@ const LandingPage = () => {
         const q = query(
           collection(db, 'deals'),
           where('topDeal', '==', true),
-          where('approved', '==', true) // ✅ Only approved deals
+          where('approved', '==', true)
         );
         const snapshot = await getDocs(q);
         const result = [];
@@ -59,9 +59,9 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-overlay">
-          <h1>Top Deals Right Now</h1>
-          <p>Browse the hottest discounts on DealHub</p>
+        <div className="hero-content">
+          <h1>Discover Top Deals</h1>
+          <p>Explore exclusive discounts on your favorite items</p>
         </div>
       </section>
  
@@ -83,16 +83,18 @@ const LandingPage = () => {
             filteredDeals.map((deal) => (
               <div className="deal-card" key={deal.id}>
                 <img src={deal.imageUrl} alt={deal.title} />
-                <h4>{deal.title}</h4>
-                <p className="price">
-                  <span className="old-price">${deal.price}</span>{' '}
-                  <span className="new-price">
-                    ${Math.floor(deal.price * (1 - deal.discount / 100))}
-                  </span>
-                </p>
-                <button onClick={() => navigate(`/deal/${deal.id}`)}>
-                  View Deal
-                </button>
+                <div className="deal-info">
+                  <h4>{deal.title}</h4>
+                  <p className="price">
+                    <span className="old-price">${deal.price}</span>{' '}
+                    <span className="new-price">
+                      ${Math.floor(deal.price * (1 - deal.discount / 100))}
+                    </span>
+                  </p>
+                  <button onClick={() => navigate(`/deal/${deal.id}`)}>
+                    View Deal
+                  </button>
+                </div>
               </div>
             ))
           ) : (
