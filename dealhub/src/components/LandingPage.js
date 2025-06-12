@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db, storage } from '../firebaseConfig';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { db, storage, auth } from '../firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
  
 const LandingPage = () => {
   const [deals, setDeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [greeting, setGreeting] = useState('');
   const navigate = useNavigate();
  
   useEffect(() => {
@@ -51,6 +54,28 @@ const LandingPage = () => {
     fetchDeals();
   }, []);
  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          if (data.role === 'customer') {
+            setCustomerName(data.name || 'Customer');
+ 
+            const hour = new Date().getHours();
+            if (hour < 12) setGreeting('Good Morning');
+            else if (hour < 18) setGreeting('Good Afternoon');
+            else setGreeting('Good Evening');
+          }
+        }
+      }
+    });
+ 
+    return () => unsubscribe();
+  }, []);
+ 
   const filteredDeals = deals.filter((deal) =>
     deal.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -59,11 +84,18 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-content">
-          <h1>Discover Top Deals</h1>
-          <p>Explore exclusive discounts on your favorite items</p>
+        <div className="hero-overlay">
+          <h1>Top Deals Right Now</h1>
+          <p>Browse the hottest discounts on DealHub</p>
         </div>
       </section>
+ 
+      {/* Greeting */}
+      {customerName && greeting && (
+        <div className="greeting-bar">
+          <p>{greeting}, <strong>{customerName}</strong> 👋</p>
+        </div>
+      )}
  
       {/* Search Bar */}
       <div className="search-bar">
@@ -83,18 +115,16 @@ const LandingPage = () => {
             filteredDeals.map((deal) => (
               <div className="deal-card" key={deal.id}>
                 <img src={deal.imageUrl} alt={deal.title} />
-                <div className="deal-info">
-                  <h4>{deal.title}</h4>
-                  <p className="price">
-                    <span className="old-price">${deal.price}</span>{' '}
-                    <span className="new-price">
-                      ${Math.floor(deal.price * (1 - deal.discount / 100))}
-                    </span>
-                  </p>
-                  <button onClick={() => navigate(`/deal/${deal.id}`)}>
-                    View Deal
-                  </button>
-                </div>
+                <h4>{deal.title}</h4>
+                <p className="price">
+                  <span className="old-price">${deal.price}</span>{' '}
+                  <span className="new-price">
+                    ${Math.floor(deal.price * (1 - deal.discount / 100))}
+                  </span>
+                </p>
+                <button onClick={() => navigate(`/deal/${deal.id}`)}>
+                  View Deal
+                </button>
               </div>
             ))
           ) : (
