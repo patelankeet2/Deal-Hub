@@ -83,6 +83,10 @@ const AdminProfile = () => {
           </div>
         </div>
       </div>
+ 
+      <footer className="footer">
+        © {new Date().getFullYear()} DealHub Admin Panel
+      </footer>
     </div>
   );
 };
