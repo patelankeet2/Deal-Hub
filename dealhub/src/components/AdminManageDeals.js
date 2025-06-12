@@ -45,52 +45,54 @@ const AdminManageDeals = () => {
   };
  
   return (
-    <div className="manage-deals-container">
-      <h2>Manage Deals</h2>
-      <table className="deals-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Price ($)</th>
-            <th>Merchant</th>
-            <th>Status</th>
-            <th>Top Deal</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deals.map(deal => (
-            <tr key={deal.id}>
-              <td>{deal.title}</td>
-              <td>{deal.category}</td>
-              <td>{deal.price}</td>
-              <td>{deal.createdByName || deal.createdBy || 'N/A'}</td>
-              <td>
-                <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
-                  {deal.approved ? 'Approved' : 'Pending'}
-                </span>
-              </td>
-              <td>
-                <span className={deal.topDeal ? 'top-yes' : 'top-no'}>
-                  {deal.topDeal ? 'Yes' : 'No'}
-                </span>
-              </td>
-              <td>
-                <button className="approve" onClick={() => handleApprove(deal.id)}>Approve</button>
-                <button className="reject" onClick={() => handleReject(deal.id)}>Reject</button>
-                <button className="toggle-top" onClick={() => toggleTopDeal(deal.id, deal.topDeal)}>
-                  {deal.topDeal ? 'Unset Top' : 'Set Top'}
-                </button>
-                <button className="delete" onClick={() => handleDelete(deal.id)}>Delete</button>
-              </td>
+    <div className="admin-deals-container">
+      <h2>🎯 Admin Deal Management</h2>
+      <div className="responsive-table">
+        <table className="deals-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Price ($)</th>
+              <th>Merchant</th>
+              <th>Status</th>
+              <th>Top Deal</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {deals.map(deal => (
+              <tr key={deal.id}>
+                <td>{deal.title}</td>
+                <td>{deal.category}</td>
+                <td>${deal.price}</td>
+                <td>{deal.createdByName || deal.createdBy || 'N/A'}</td>
+                <td>
+                  <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
+                    {deal.approved ? 'Approved' : 'Pending'}
+                  </span>
+                </td>
+                <td>
+                  <span className={deal.topDeal ? 'top-yes' : 'top-no'}>
+                    {deal.topDeal ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="action-btns">
+                  <button className="approve" onClick={() => handleApprove(deal.id)}>✅</button>
+                  <button className="reject" onClick={() => handleReject(deal.id)}>⛔</button>
+                  <button className="toggle-top" onClick={() => toggleTopDeal(deal.id, deal.topDeal)}>
+                    {deal.topDeal ? 'Unset' : 'Set'}
+                  </button>
+                  <button className="delete" onClick={() => handleDelete(deal.id)}>🗑</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
  
       <footer className="footer">
-        <p>© 2025 DealHub Admin Panel</p>
+        <p>© 2025 DealHub Admin Panel. All rights reserved.</p>
       </footer>
     </div>
   );
