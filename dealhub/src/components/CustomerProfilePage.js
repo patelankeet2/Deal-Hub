@@ -88,6 +88,10 @@ const CustomerProfilePage = () => {
  
         <button type="submit">💾 Save Changes</button>
       </form>
+    {/* Footer */}
+    <footer className="footer">
+        <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };
