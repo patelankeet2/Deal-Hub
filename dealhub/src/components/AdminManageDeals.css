@@ -121,3 +121,24 @@ button:hover {
   font-size: 0.85rem;
   color: #6b7280;
 }
+ 
+.search-bar {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+ 
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: border 0.2s ease;
+}
+ 
+.search-bar input:focus {
+  border-color: #6366f1;
+  outline: none;
+}
