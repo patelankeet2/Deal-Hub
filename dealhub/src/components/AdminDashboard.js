@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig';
 import {
+  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid
+  CartesianGrid,
+  Tooltip
 } from 'recharts';
  
 const AdminDashboard = () => {
@@ -20,11 +20,18 @@ const AdminDashboard = () => {
     approvedDeals: 0,
     totalEarnings: 0
   });
+  const [adminProfile, setAdminProfile] = useState({ name: '', photo: '' });
   const [earningsData, setEarningsData] = useState([]);
-  const [adminName, setAdminName] = useState('');
+ 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
  
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchData = async () => {
       try {
         const usersSnap = await getDocs(collection(db, 'users'));
         const dealsSnap = await getDocs(collection(db, 'deals'));
@@ -34,109 +41,116 @@ const AdminDashboard = () => {
         let totalDeals = 0;
         let approvedDeals = 0;
         let totalEarnings = 0;
-        const earningsList = [];
  
+        const emailToName = {};
         usersSnap.forEach(doc => {
-          const data = doc.data();
+          const user = doc.data();
           totalUsers++;
-          if (data.role === 'merchant') totalMerchants++;
+          if (user.role === 'merchant') totalMerchants++;
+          emailToName[user.email] = user.name || 'Unnamed';
+          if (doc.id === auth.currentUser?.uid) {
+            setAdminProfile({
+              name: user.name || 'Admin',
+              photo: user.photo || '/default-avatar.png'
+            });
+          }
         });
+ 
+        const earningsList = [];
  
         dealsSnap.forEach(doc => {
           const deal = doc.data();
           totalDeals++;
           if (deal.approved) {
             approvedDeals++;
-            const netPrice = deal.price * (1 - deal.discount / 100);
-            const commission = parseFloat((netPrice * 0.05).toFixed(2));
+            const net = deal.price * (1 - deal.discount / 100);
+            const commission = net * 0.05;
             totalEarnings += commission;
- 
             earningsList.push({
-              title: deal.title.length > 20 ? deal.title.slice(0, 17) + '...' : deal.title,
-              commission,
+              title: deal.title.length > 18 ? deal.title.slice(0, 15) + '...' : deal.title,
+              commission: parseFloat(commission.toFixed(2))
             });
           }
         });
- 
-        const topEarnings = earningsList
-          .sort((a, b) => b.commission - a.commission)
-          .slice(0, 15);
  
         setStats({
           totalUsers,
           totalMerchants,
           totalDeals,
           approvedDeals,
-          totalEarnings,
+          totalEarnings
         });
  
-        setEarningsData(topEarnings);
+        setEarningsData(
+          earningsList.sort((a, b) => b.commission - a.commission).slice(0)
+        );
+ 
       } catch (error) {
-        console.error('Error loading stats:', error);
+        console.error('Error loading admin dashboard:', error);
       }
     };
  
-    const fetchAdminName = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          setAdminName(userDoc.data().name || 'Admin');
-        }
-      }
-    };
- 
-    fetchStats();
-    fetchAdminName();
+    fetchData();
   }, []);
  
   return (
     <div className="admin-dashboard">
-      <div className="dashboard-wrapper">
-        {adminName && (
-          <p className="admin-greeting">👋 Welcome, {adminName}!</p>
-        )}
- 
-        <h2>📊 Admin Dashboard Overview</h2>
- 
-        <div className="admin-grid">
-          <div className="admin-card"><p>Total Users</p><h3>{stats.totalUsers}</h3></div>
-          <div className="admin-card"><p>Total Merchants</p><h3>{stats.totalMerchants}</h3></div>
-          <div className="admin-card"><p>Total Deals</p><h3>{stats.totalDeals}</h3></div>
-          <div className="admin-card"><p>Approved Deals</p><h3>{stats.approvedDeals}</h3></div>
-          <div className="admin-card highlight">
-            <p>Total Earnings (5%)</p>
-            <h3>${stats.totalEarnings.toFixed(2)}</h3>
-          </div>
+      <div className="admin-header">
+        <div className="admin-greeting">
+          <h2>{getGreeting()}, {adminProfile.name}!</h2>
         </div>
+        <img
+          src={adminProfile.photo || '/default-avatar.png'}
+          alt="Admin Avatar"
+          className="admin-avatar"
+        />
+      </div>
  
-        <div className="chart-section">
-          <h3>Earnings by Approved Deal</h3>
-          {earningsData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={earningsData} margin={{ top: 10, right: 30, left: 0, bottom: 80 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="title"
-                  angle={-45}
-                  textAnchor="end"
-                  interval={0}
-                  height={90}
-                  tick={{ fontSize: 11 }}
-                />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="commission" fill="#4f46e5" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <p className="no-data">No approved deals to show.</p>
-          )}
+      <div className="admin-grid">
+        <div className="admin-card">
+          <p>Total Users</p>
+          <h3>{stats.totalUsers}</h3>
+        </div>
+        <div className="admin-card">
+          <p>Total Merchants</p>
+          <h3>{stats.totalMerchants}</h3>
+        </div>
+        <div className="admin-card">
+          <p>Total Deals</p>
+          <h3>{stats.totalDeals}</h3>
+        </div>
+        <div className="admin-card">
+          <p>Approved Deals</p>
+          <h3>{stats.approvedDeals}</h3>
+        </div>
+        <div className="admin-card highlight">
+          <p>Total Earnings (5%)</p>
+          <h3>${stats.totalEarnings.toFixed(2)}</h3>
         </div>
       </div>
  
+      <div className="admin-chart">
+        <h3>📈 Earnings per Approved Deal</h3>
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={earningsData} margin={{ top: 20, bottom: 60 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="title"
+              angle={-45}
+              textAnchor="end"
+              interval={0}
+              height={70}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="commission" fill="#6366f1" radius={[6, 6, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+ 
       <footer className="footer">
-        © {new Date().getFullYear()} DealHub Admin Panel
+        <p>© {new Date().getFullYear()} DealHub Admin Panel</p>
       </footer>
     </div>
   );
