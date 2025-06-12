@@ -25,7 +25,7 @@ const OrderTrackingPage = () => {
             total: data.totalAmount || 0,
             shipping: data.shipping || {},
             cart: data.cart || [],
-            status: 'Paid', // default for now
+            status: 'Paid',
           };
         });
  
@@ -52,26 +52,32 @@ const OrderTrackingPage = () => {
         <div className="order-list">
           {orders.map((order) => (
             <div className="order-card" key={order.id}>
-              <h4>Order ID: {order.id}</h4>
+              <h4>Order ID: <span>{order.id}</span></h4>
               <p><strong>Date:</strong> {order.createdAt}</p>
-              <p><strong>Customer Name:</strong> {order.shipping.name}</p>
+              <p><strong>Name:</strong> {order.shipping.name}</p>
               <p><strong>Email:</strong> {order.shipping.email}</p>
               <p><strong>Phone:</strong> {order.shipping.phone}</p>
               <p><strong>Address:</strong> {order.shipping.address}</p>
-              <p><strong>Items:</strong></p>
-              <ul>
-                {order.cart.map((item, idx) => (
-                  <li key={idx}>
-                    {item.title} - ${item.price} (-{item.discount}%)
-                  </li>
-                ))}
-              </ul>
-              <p><strong>Total Paid:</strong> ${order.total}</p>
-              <p><strong>Status:</strong> {order.status}</p>
+              <div className="order-items">
+                <strong>Items:</strong>
+                <ul>
+                  {order.cart.map((item, idx) => (
+                    <li key={idx}>
+                      {item.title} — ${Math.floor(item.price * (1 - item.discount / 100))} ({item.discount}% off)
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="order-total"><strong>Total Paid:</strong> ${order.total}</p>
+              <p className="order-status"><strong>Status:</strong> {order.status}</p>
             </div>
           ))}
         </div>
       )}
+    {/* Footer */}
+    <footer className="footer">
+      <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };
