@@ -102,7 +102,15 @@ const LandingPage = () => {
       {/* Greeting with Avatar */}
       {customerName && greeting && (
         <div className="greeting-bar">
-          {avatarUrl && <img src={avatarUrl} alt="avatar" className="avatar" />}
+          {avatarUrl && (
+            <img
+              src={avatarUrl}
+              alt="avatar"
+              className="avatar clickable"
+              onClick={() => navigate('/profile')}
+              title="Go to Profile"
+            />
+          )}
           <p>
             {greeting}, <strong>{customerName}</strong> 👋
           </p>
@@ -145,7 +153,6 @@ const LandingPage = () => {
         </div>
       </section>
  
-      {/* Footer */}
       <footer className="footer">
         <p>© 2025 DealHub. All rights reserved.</p>
       </footer>
