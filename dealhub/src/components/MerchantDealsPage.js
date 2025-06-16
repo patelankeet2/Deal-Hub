@@ -68,46 +68,52 @@ const MerchantDealsPage = () => {
 
   return (
     <div className="merchant-deals-page">
-      <h2>All My Deals</h2>
+      <h2>📦 My Deals Overview</h2>
 
       {loading ? (
-        <p>Loading deals...</p>
+        <p className="loading">Loading deals...</p>
       ) : deals.length === 0 ? (
-        <p>No deals found.</p>
+        <p className="no-deals">You have not listed any deals yet.</p>
       ) : (
-        <table className="merchant-deals-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Price ($)</th>
-              <th>Discount (%)</th>
-              <th>Final Profit ($)</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {deals.map((deal) => (
-              <tr key={deal.id}>
-                <td>{deal.title}</td>
-                <td>{deal.category}</td>
-                <td>{deal.price}</td>
-                <td>{deal.discount}</td>
-                <td>${deal.finalProfit}</td>
-                <td>
-                  <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
-                    {deal.approved ? 'Approved' : 'Pending'}
-                  </span>
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(deal.id)}><FaEdit /></button>
-                  <button onClick={() => handleDelete(deal.id)} className="delete"><FaTrash /></button>
-                </td>
+        <div className="table-wrapper">
+          <table className="merchant-deals-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price ($)</th>
+                <th>Discount (%)</th>
+                <th>Final Profit ($)</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {deals.map((deal) => (
+                <tr key={deal.id}>
+                  <td>{deal.title}</td>
+                  <td>{deal.category}</td>
+                  <td>{deal.price}</td>
+                  <td>{deal.discount}</td>
+                  <td>${deal.finalProfit}</td>
+                  <td>
+                    <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
+                      {deal.approved ? 'Approved' : 'Pending'}
+                    </span>
+                  </td>
+                  <td>
+                    <button onClick={() => handleEdit(deal.id)} title="Edit">
+                      <FaEdit />
+                    </button>
+                    <button onClick={() => handleDelete(deal.id)} className="delete" title="Delete">
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
