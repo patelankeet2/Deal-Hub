@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; // Reusing same styles as customer login/register
+import "./Login.css"; // Reusing modern login/register styles
 import logo from "../assets/logo.png";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebaseConfig";
@@ -32,30 +32,39 @@ const CustomerForgotPassword = () => {
  
   return (
     <div className="login-container">
-      <div className="login-card">
-        <img src={logo} alt="DealHub" className="logo" />
-        <h2>Reset Your Password</h2>
-        <p>Enter your customer account email address to receive password reset instructions.</p>
+      <div className="login-wrapper">
+        {/* Left Side Logo */}
+        <div className="login-left">
+          <img src={logo} alt="DealHub Logo" className="login-logo" />
+        </div>
  
-        {!submitted ? (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="customer@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit">Send Reset Link</button>
-            {error && <p className="error">{error}</p>}
-          </form>
-        ) : (
-          <div className="confirmation">
-            ✅ A password reset link has been sent to <strong>{email}</strong>.
+        {/* Right Form */}
+        <div className="login-right">
+          <h2>Reset Your Password</h2>
+          <p className="subtext">Enter your customer email to receive reset instructions</p>
+ 
+          {!submitted ? (
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="customer@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              {error && <p className="login-error">{error}</p>}
+              <button type="submit">Send Reset Link</button>
+            </form>
+          ) : (
+            <div className="confirmation">
+              ✅ A password reset link has been sent to <strong>{email}</strong>.
+            </div>
+          )}
+ 
+          <div className="login-links">
+            <p><a href="/login">Back to Login</a></p>
           </div>
-        )}
- 
-        <p><a href="/login">Back to Login</a></p>
+        </div>
       </div>
     </div>
   );
