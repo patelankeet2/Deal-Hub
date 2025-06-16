@@ -23,7 +23,6 @@ const MerchantCustomersPage = () => {
           ...doc.data()
         }));
 
-        // Extract only items where merchantId matches logged-in merchant
         const merchantOrders = [];
 
         allOrders.forEach(order => {
@@ -58,32 +57,34 @@ const MerchantCustomersPage = () => {
       <h2>Customers Who Purchased Your Deals</h2>
 
       {loading ? (
-        <p>Loading orders...</p>
+        <p className="status-text">Loading orders...</p>
       ) : orders.length === 0 ? (
-        <p>No customer purchases found yet.</p>
+        <p className="status-text">No customer purchases found yet.</p>
       ) : (
-        <table className="customers-table">
-          <thead>
-            <tr>
-              <th>Customer Name</th>
-              <th>Email</th>
-              <th>Deal Title</th>
-              <th>Paid ($)</th>
-              <th>Purchase Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={index}>
-                <td>{order.customerName}</td>
-                <td>{order.customerEmail}</td>
-                <td>{order.dealTitle}</td>
-                <td>${order.pricePaid}</td>
-                <td>{order.createdAt}</td>
+        <div className="table-wrapper">
+          <table className="customers-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Deal Title</th>
+                <th>Paid ($)</th>
+                <th>Purchase Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.customerName}</td>
+                  <td>{order.customerEmail}</td>
+                  <td>{order.dealTitle}</td>
+                  <td>${order.pricePaid}</td>
+                  <td>{order.createdAt}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
