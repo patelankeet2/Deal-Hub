@@ -8,6 +8,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MerchantDealsPage = () => {
   const [deals, setDeals] = useState([]);
+  const [filteredDeals, setFilteredDeals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [merchantEmail, setMerchantEmail] = useState(null);
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const MerchantDealsPage = () => {
           };
         });
         setDeals(list);
+        setFilteredDeals(list);
       } catch (error) {
         console.error('Error fetching merchant deals:', error);
       } finally {
@@ -56,6 +59,16 @@ const MerchantDealsPage = () => {
 
     fetchDeals();
   }, [merchantEmail]);
+
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = deals.filter(deal =>
+      deal.title.toLowerCase().includes(term) ||
+      deal.category.toLowerCase().includes(term)
+    );
+    setFilteredDeals(filtered);
+  };
 
   const handleEdit = (id) => {
     navigate(`/edit-deal/${id}`);
@@ -70,10 +83,18 @@ const MerchantDealsPage = () => {
     <div className="merchant-deals-page">
       <h2>📦 My Deals Overview</h2>
 
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search deals by title or category..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+
       {loading ? (
         <p className="loading">Loading deals...</p>
-      ) : deals.length === 0 ? (
-        <p className="no-deals">You have not listed any deals yet.</p>
+      ) : filteredDeals.length === 0 ? (
+        <p className="no-deals">No deals match your search.</p>
       ) : (
         <div className="table-wrapper">
           <table className="merchant-deals-table">
@@ -89,7 +110,7 @@ const MerchantDealsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {deals.map((deal) => (
+              {filteredDeals.map((deal) => (
                 <tr key={deal.id}>
                   <td>{deal.title}</td>
                   <td>{deal.category}</td>
