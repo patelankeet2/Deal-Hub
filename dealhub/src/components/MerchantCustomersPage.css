@@ -3,20 +3,34 @@
   font-family: 'Segoe UI', sans-serif;
   background: #f9fafb;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .merchant-customers-page h2 {
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #111827;
+  text-align: center;
+}
+
+.status-text {
+  text-align: center;
+  font-size: 1rem;
+  color: #6b7280;
+  margin-top: 2rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .customers-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .customers-table th,
@@ -24,10 +38,34 @@
   padding: 1rem;
   border-bottom: 1px solid #f1f1f1;
   text-align: left;
+  font-size: 0.95rem;
+  color: #374151;
 }
 
 .customers-table th {
   background: #f3f4f6;
   font-weight: 600;
-  color: #374151;
+  color: #1f2937;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .merchant-customers-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .customers-table th,
+  .customers-table td {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .merchant-customers-page {
+    padding: 1rem;
+  }
+
+  .customers-table {
+    font-size: 0.85rem;
+  }
 }
