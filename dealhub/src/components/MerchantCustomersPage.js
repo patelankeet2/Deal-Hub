@@ -6,6 +6,8 @@ import { format } from 'date-fns';
 
 const MerchantCustomersPage = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const user = auth.currentUser;
 
@@ -42,6 +44,7 @@ const MerchantCustomersPage = () => {
         });
 
         setOrders(merchantOrders);
+        setFilteredOrders(merchantOrders);
       } catch (error) {
         console.error('Error fetching customer orders:', error);
       } finally {
@@ -52,14 +55,33 @@ const MerchantCustomersPage = () => {
     fetchOrders();
   }, [user]);
 
+  const handleSearch = (e) => {
+    const keyword = e.target.value.toLowerCase();
+    setSearchTerm(keyword);
+    const filtered = orders.filter(order =>
+      order.customerName.toLowerCase().includes(keyword) ||
+      order.customerEmail.toLowerCase().includes(keyword) ||
+      order.dealTitle.toLowerCase().includes(keyword)
+    );
+    setFilteredOrders(filtered);
+  };
+
   return (
     <div className="merchant-customers-page">
       <h2>Customers Who Purchased Your Deals</h2>
 
+      <input
+        type="text"
+        placeholder="Search by name, email, or deal..."
+        className="search-input"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+
       {loading ? (
-        <p className="status-text">Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <p className="status-text">No customer purchases found yet.</p>
+        <p>Loading orders...</p>
+      ) : filteredOrders.length === 0 ? (
+        <p>No matching customer purchases found.</p>
       ) : (
         <div className="table-wrapper">
           <table className="customers-table">
@@ -73,7 +95,7 @@ const MerchantCustomersPage = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order, index) => (
+              {filteredOrders.map((order, index) => (
                 <tr key={index}>
                   <td>{order.customerName}</td>
                   <td>{order.customerEmail}</td>
