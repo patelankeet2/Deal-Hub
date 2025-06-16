@@ -107,3 +107,15 @@ button.delete {
     font-size: 0.85rem;
   }
 }
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  margin: 1rem auto 2rem;
+  display: block;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
