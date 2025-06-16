@@ -1,9 +1,7 @@
-
 import React, { useEffect, useState } from 'react';
 import './Settings.css';
-import { auth, db, storage } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const Settings = () => {
   const user = auth.currentUser;
@@ -13,8 +11,6 @@ const Settings = () => {
     license: '',
     photoURL: ''
   });
-  const [preview, setPreview] = useState('');
-  const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -30,7 +26,6 @@ const Settings = () => {
           license: data.license || '',
           photoURL: data.photoURL || ''
         });
-        setPreview(data.photoURL || '');
       }
     };
     loadProfile();
@@ -40,28 +35,14 @@ const Settings = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    setPreview(URL.createObjectURL(file));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let imageUrl = formData.photoURL;
-
-      if (file) {
-        const imageRef = ref(storage, `merchant-profiles/${user.uid}`);
-        await uploadBytes(imageRef, file);
-        imageUrl = await getDownloadURL(imageRef);
-      }
-
       await updateDoc(doc(db, 'users', user.uid), {
         name: formData.name,
         phone: formData.phone,
         license: formData.license,
-        photoURL: imageUrl
+        photoURL: formData.photoURL
       });
 
       setMessage('Profile updated successfully!');
@@ -77,9 +58,18 @@ const Settings = () => {
 
       <form className="profile-form" onSubmit={handleSubmit}>
         <div className="profile-pic">
-          {preview && <img src={preview} alt="Profile" />}
-          <input type="file" onChange={handleImage} />
+          {formData.photoURL && (
+            <img src={formData.photoURL} alt="Profile Preview" />
+          )}
         </div>
+
+        <label>Profile Picture URL</label>
+        <input
+          name="photoURL"
+          value={formData.photoURL}
+          onChange={handleChange}
+          placeholder="https://example.com/your-photo.jpg"
+        />
 
         <label>Name</label>
         <input name="name" value={formData.name} onChange={handleChange} required />

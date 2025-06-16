@@ -33,7 +33,6 @@ const MerchantRegister = () => {
     setError("");
 
     try {
-      // Register the merchant
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
@@ -41,13 +40,12 @@ const MerchantRegister = () => {
       );
       const user = userCredential.user;
 
-      // Save merchant profile in Firestore
       await setDoc(doc(db, "users", user.uid), {
         name: formData.name,
         email: formData.email,
         license: formData.license || null,
         role: "merchant",
-        authorized: false, // Admin will approve later
+        isAuthorized: false,
         createdAt: serverTimestamp()
       });
 
@@ -60,72 +58,66 @@ const MerchantRegister = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-box">
-        <h2>Merchant Registration</h2>
-        <p>Create an account to publish and track your deals.</p>
-        <form onSubmit={handleSubmit}>
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="John Doe"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Email Address</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="merchant@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Re-enter password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-
-          <label>NZ Driving License (optional)</label>
-          <input
-            type="text"
-            name="license"
-            placeholder="e.g., 1234567 or 1234567-01"
-            value={formData.license}
-            onChange={handleChange}
-          />
-
-          {error && <div className="error">{error}</div>}
-
-          <button type="submit">Register</button>
-        </form>
-
-        <div className="login-links">
-          <a href="/merchant-login">Back to Login</a>
+    <div className="merchant-register-container">
+      <div className="merchant-register-wrapper">
+        <div className="merchant-register-left">
+          <img src={logo} alt="Deal Hub Logo" className="register-logo" />
         </div>
-      </div>
 
-      <div className="login-image">
-        <img src={logo} alt="Deal Hub Logo" className="dealhub-logo" />
+        <div className="merchant-register-right">
+          <h2>Merchant Registration</h2>
+          <p className="subtext">Create an account to publish and track your deals</p>
+
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="license"
+              placeholder="NZ Driving License (optional)"
+              value={formData.license}
+              onChange={handleChange}
+            />
+
+            {error && <p className="register-error">{error}</p>}
+
+            <button type="submit">Register</button>
+          </form>
+
+          <div className="register-links">
+            <p>Already a merchant? <a href="/merchant-login">Login</a></p>
+          </div>
+        </div>
       </div>
     </div>
   );
