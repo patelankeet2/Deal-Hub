@@ -9,22 +9,19 @@ import { auth, db } from '../firebaseConfig';
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: '', email: '', password: '', confirmPassword: ''
   });
   const [error, setError] = useState('');
  
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
  
-    const { fullName, email, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword } = formData;
  
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
@@ -36,15 +33,13 @@ function Register() {
       const user = userCredential.user;
  
       await setDoc(doc(db, "users", user.uid), {
-        fullName,
+        name,
         email,
-        role: "customer"  // Set default role
+        role: "customer"
       });
  
       navigate('/login');
     } catch (err) {
-      console.error("Firebase Error:", err.code, err.message);
- 
       if (err.code === "auth/email-already-in-use") {
         setError("This email is already registered.");
       } else if (err.code === "auth/weak-password") {
@@ -58,48 +53,26 @@ function Register() {
   };
  
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <img src={logo} alt="DealHub" className="logo" />
-        <h2>Create an account</h2>
-        <p>Enter your details below to create your account.</p>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Register</button>
-        </form>
-        {error && <p style={{ color: 'red', fontSize: '13px' }}>{error}</p>}
-        <p>Already have an account? <a href="/login">Login</a></p>
+    <div className="login-container">
+      <div className="login-wrapper">
+        <div className="login-left">
+          <img src={logo} alt="DealHub Logo" className="login-logo" />
+        </div>
+        <div className="login-right">
+          <h2>Create Account</h2>
+          <p className="subtext">Enter your details to get started</p>
+          <form onSubmit={handleSubmit}>
+            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
+            <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+            <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
+            <button type="submit">Register</button>
+          </form>
+          {error && <p className="login-error">{error}</p>}
+          <div className="login-links">
+            <p>Already have an account? <a href="/login">Login</a></p>
+          </div>
+        </div>
       </div>
     </div>
   );
