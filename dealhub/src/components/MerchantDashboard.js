@@ -109,7 +109,15 @@ const MerchantDashboard = () => {
             <h2>{getGreeting()}, {merchantName} 👋</h2>
             <p>Here’s an overview of your performance</p>
           </div>
-          {avatar && <img src={avatar} alt="Merchant Avatar" className="merchant-avatar" />}
+          {avatar && (
+            <img
+              src={avatar}
+              alt="Merchant Avatar"
+              className="merchant-avatar clickable"
+              onClick={() => navigate('/settings')}
+              title="Go to Settings"
+            />
+          )}
         </div>
 
         <div className="merchant-stats">
