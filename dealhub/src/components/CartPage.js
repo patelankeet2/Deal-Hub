@@ -7,9 +7,14 @@ const CartPage = () => {
   const navigate = useNavigate();
  
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartWithQty = cart.map(item => ({ ...item, quantity: item.quantity || 1 }));
-    setCartItems(cartWithQty);
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartWithQty = cart.map(item => ({ ...item, quantity: item.quantity || 1 }));
+      setCartItems(cartWithQty);
+    } catch (err) {
+      console.error("Failed to load cart:", err);
+      setCartItems([]);
+    }
   }, []);
  
   const updateCart = (items) => {
@@ -42,9 +47,9 @@ const CartPage = () => {
   };
  
   const total = cartItems.reduce((sum, item) => {
-    const discounted = Math.floor(item.price * (1 - item.discount / 100));
+    const discounted = item.price * (1 - item.discount / 100);
     return sum + discounted * item.quantity;
-  }, 0);
+  }, 0).toFixed(2);
  
   return (
     <div className="cart-page">
@@ -60,9 +65,9 @@ const CartPage = () => {
         <>
           <div className="cart-list">
             {cartItems.map((item) => {
-              const discounted = Math.floor(item.price * (1 - item.discount / 100));
+              const discounted = (item.price * (1 - item.discount / 100)).toFixed(2);
               return (
-                <div className="cart-item" key={item.id}>
+                <div className="cart-item fade-in" key={item.id}>
                   <img src={item.imageUrl} alt={item.title} />
                   <div className="cart-details">
                     <h4>{item.title}</h4>
@@ -72,7 +77,7 @@ const CartPage = () => {
                       <span>{item.quantity}</span>
                       <button onClick={() => handleQuantityChange(item.id, 1)}>+</button>
                     </div>
-                    <p>Subtotal: ${discounted * item.quantity}</p>
+                    <p>Subtotal: ${(discounted * item.quantity).toFixed(2)}</p>
                     <button className="remove-btn" onClick={() => handleRemove(item.id)}>Remove</button>
                   </div>
                 </div>
@@ -89,6 +94,10 @@ const CartPage = () => {
           </div>
         </>
       )}
+    {/* Footer */}
+    <footer className="footer">
+        <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };

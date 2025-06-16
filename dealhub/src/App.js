@@ -25,6 +25,7 @@ import MerchantCustomersPage from './components/MerchantCustomersPage';
 import AdminDashboard from './components/AdminDashboard';
 import AdminManageUsers from './components/AdminManageUsers';
 import AdminManageDeals from './components/AdminManageDeals';
+import AdminManageCategory from './components/AdminManageCategory';
 import AdminEarnings from './components/AdminEarnings';
 import AdminProfile from './components/AdminProfile';
 
@@ -75,6 +76,7 @@ function App() {
           <Route path="/admin-dashboard" element={<ProtectedRoute element={AdminDashboard} allowedRoles={['admin']} />} />
           <Route path="/admin-manage-users" element={<ProtectedRoute element={AdminManageUsers} allowedRoles={['admin']} />} />
           <Route path="/admin-manage-deals" element={<ProtectedRoute element={AdminManageDeals} allowedRoles={['admin']} />} />
+          <Route path="/admin-manage-category" element={<ProtectedRoute element={AdminManageCategory} allowedRoles={['admin']} />} />
           <Route path="/admin-earnings" element={<ProtectedRoute element={AdminEarnings} allowedRoles={['admin']} />} />
           <Route path="/admin-profile" element={<ProtectedRoute element={AdminProfile} allowedRoles={['admin']} />} />
 
