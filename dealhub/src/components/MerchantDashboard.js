@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
-import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MerchantDashboard = () => {
   const navigate = useNavigate();
   const [merchantEmail, setMerchantEmail] = useState(null);
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
   const [summary, setSummary] = useState({
     total: 0,
     approved: 0,
@@ -18,14 +18,10 @@ const MerchantDashboard = () => {
     earnings: 0
   });
 
-  // Monitor login status
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setMerchantEmail(user.email);
-      } else {
-        navigate('/merchant-login');
-      }
+      if (user) setMerchantEmail(user.email);
+      else navigate('/merchant-login');
     });
     return () => unsubscribe();
   }, [navigate]);
@@ -84,8 +80,14 @@ const MerchantDashboard = () => {
     fetchDeals();
   }, [merchantEmail]);
 
-  const handleEdit = (title) => alert(`Edit ${title}`);
-  const handleDelete = (title) => alert(`Delete ${title}`);
+  const handleDelete = (title) => {
+    alert(`Delete ${title}`); // Replace with actual delete logic
+  };
+
+  const filteredDeals = deals.filter((deal) =>
+    deal.title.toLowerCase().includes(search.toLowerCase()) ||
+    deal.category.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="merchant-container">
@@ -96,64 +98,81 @@ const MerchantDashboard = () => {
           <div className="stat-card">
             <p>Total Deals</p>
             <h3>{summary.total}</h3>
-            <span>All submitted deals</span>
+            <span>All submitted</span>
           </div>
           <div className="stat-card">
-            <p>Approved Deals</p>
+            <p>Approved</p>
             <h3>{summary.approved}</h3>
-            <span>Visible to customers</span>
+            <span>Approved by Admin</span>
           </div>
           <div className="stat-card">
-            <p>Pending Approvals</p>
+            <p>Pending</p>
             <h3>{summary.pending}</h3>
-            <span>Awaiting admin approval</span>
+            <span>Waiting approval</span>
           </div>
           <div className="stat-card">
             <p>Total Earnings</p>
             <h3>${summary.earnings.toFixed(2)}</h3>
-            <span>From approved deals (after 5% admin fee)</span>
+            <span>After 5% fee</span>
           </div>
         </div>
 
         <div className="action-bar">
-          <button className="create-deal" onClick={() => navigate('/create-deal')}>+ Create New Deal</button>
-          <input className="search-input" placeholder="Search deals..." />
+          <button className="create-deal-btn" onClick={() => navigate('/create-deal')}>+ Create Deal</button>
+          <input
+            className="search-input"
+            placeholder="Search by title or category..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
 
         {loading ? (
           <p>Loading deals...</p>
         ) : (
-          <table className="deals-table">
-            <thead>
-              <tr>
-                <th>Deal Title</th>
-                <th>Price ($)</th>
-                <th>Discount (%)</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Earning ($)</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {deals.map((deal) => (
-                <tr key={deal.id}>
-                  <td>{deal.title}</td>
-                  <td>{deal.price}</td>
-                  <td>{deal.discount}</td>
-                  <td>{deal.category}</td>
-                  <td>
-                    <span className={`status ${deal.status.toLowerCase()}`}>{deal.status}</span>
-                  </td>
-                  <td>${deal.earning.toFixed(2)}</td>
-                  <td>
-                    <button onClick={() => handleEdit(deal.title)}><FaEdit /></button>
-                    <button onClick={() => handleDelete(deal.title)} className="delete"><FaTrash /></button>
-                  </td>
+          <div className="table-wrapper">
+            <table className="deals-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Earning</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredDeals.map((deal) => (
+                  <tr key={deal.id}>
+                    <td>{deal.title}</td>
+                    <td>${deal.price}</td>
+                    <td>{deal.discount}%</td>
+                    <td>{deal.category}</td>
+                    <td>
+                      <span className={`status ${deal.status.toLowerCase()}`}>{deal.status}</span>
+                    </td>
+                    <td>${deal.earning.toFixed(2)}</td>
+                    <td className="action-buttons">
+                      <button
+                        className="edit-deal-btn"
+                        onClick={() => navigate(`/edit-deal/${deal.id}`)}
+                      >
+                        ✏️ Edit Deal
+                      </button>
+                      <button
+                        className="delete-deal-btn"
+                        onClick={() => handleDelete(deal.title)}
+                      >
+                        🗑 Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </main>
 
