@@ -12,7 +12,6 @@ const DealsPage = () => {
   const [category, setCategory] = useState('');
   const navigate = useNavigate();
  
-  // Fetch categories from Firestore
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -27,7 +26,6 @@ const DealsPage = () => {
     fetchCategories();
   }, []);
  
-  // Fetch approved deals
   useEffect(() => {
     const fetchDeals = async () => {
       try {
@@ -67,7 +65,7 @@ const DealsPage = () => {
  
   return (
     <div className="deals-page">
-      <h2>All Deals</h2>
+      <h2>🛍️ Explore All Deals</h2>
  
       <div className="filter-bar">
         <input
@@ -90,20 +88,26 @@ const DealsPage = () => {
           filtered.map((deal) => (
             <div className="deal-card" key={deal.id}>
               <img src={deal.imageUrl} alt={deal.title} />
-              <h4>{deal.title}</h4>
-              <p className="price">
-                <span className="old-price">${deal.price}</span>{' '}
-                <span className="new-price">
-                  ${Math.floor(deal.price * (1 - deal.discount / 100))}
-                </span>
-              </p>
-              <button onClick={() => navigate(`/deal/${deal.id}`)}>View Deal</button>
+              <div className="deal-info">
+                <h4>{deal.title}</h4>
+                <p className="price">
+                  <span className="old-price">${deal.price}</span>
+                  <span className="new-price">
+                    ${Math.floor(deal.price * (1 - deal.discount / 100))}
+                  </span>
+                </p>
+                <button onClick={() => navigate(`/deal/${deal.id}`)}>View Deal</button>
+              </div>
             </div>
           ))
         ) : (
           <p className="no-results">No matching deals found.</p>
         )}
       </div>
+    {/* Footer */}
+    <footer className="footer">
+        <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };

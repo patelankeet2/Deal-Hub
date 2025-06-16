@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db, storage } from '../firebaseConfig';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+import { db, storage, auth } from '../firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
  
 const LandingPage = () => {
   const [deals, setDeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const navigate = useNavigate();
  
   useEffect(() => {
@@ -16,7 +27,7 @@ const LandingPage = () => {
         const q = query(
           collection(db, 'deals'),
           where('topDeal', '==', true),
-          where('approved', '==', true) // ✅ Only approved deals
+          where('approved', '==', true)
         );
         const snapshot = await getDocs(q);
         const result = [];
@@ -31,7 +42,7 @@ const LandingPage = () => {
             try {
               imageUrl = await getDownloadURL(ref(storage, data.imagePath));
             } catch (err) {
-              console.warn('⚠️ Could not fetch image from storage:', err.message);
+              console.warn('⚠️ Could not fetch image:', err.message);
             }
           }
  
@@ -51,6 +62,29 @@ const LandingPage = () => {
     fetchDeals();
   }, []);
  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          if (data.role === 'customer') {
+            setCustomerName(data.name || 'Customer');
+            setAvatarUrl(data.imageUrl || '');
+ 
+            const hour = new Date().getHours();
+            if (hour < 12) setGreeting('Good Morning');
+            else if (hour < 18) setGreeting('Good Afternoon');
+            else setGreeting('Good Evening');
+          }
+        }
+      }
+    });
+ 
+    return () => unsubscribe();
+  }, []);
+ 
   const filteredDeals = deals.filter((deal) =>
     deal.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -65,7 +99,17 @@ const LandingPage = () => {
         </div>
       </section>
  
-      {/* Search Bar */}
+      {/* Greeting with Avatar */}
+      {customerName && greeting && (
+        <div className="greeting-bar">
+          {avatarUrl && <img src={avatarUrl} alt="avatar" className="avatar" />}
+          <p>
+            {greeting}, <strong>{customerName}</strong> 👋
+          </p>
+        </div>
+      )}
+ 
+      {/* Search */}
       <div className="search-bar">
         <input
           type="text"
@@ -83,16 +127,16 @@ const LandingPage = () => {
             filteredDeals.map((deal) => (
               <div className="deal-card" key={deal.id}>
                 <img src={deal.imageUrl} alt={deal.title} />
-                <h4>{deal.title}</h4>
-                <p className="price">
-                  <span className="old-price">${deal.price}</span>{' '}
-                  <span className="new-price">
-                    ${Math.floor(deal.price * (1 - deal.discount / 100))}
-                  </span>
-                </p>
-                <button onClick={() => navigate(`/deal/${deal.id}`)}>
-                  View Deal
-                </button>
+                <div className="deal-info">
+                  <h4>{deal.title}</h4>
+                  <p className="price">
+                    <span className="old-price">${deal.price}</span>{' '}
+                    <span className="new-price">
+                      ${Math.floor(deal.price * (1 - deal.discount / 100))}
+                    </span>
+                  </p>
+                  <button onClick={() => navigate(`/deal/${deal.id}`)}>View Deal</button>
+                </div>
               </div>
             ))
           ) : (

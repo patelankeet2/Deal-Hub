@@ -21,7 +21,6 @@ const CreateDeal = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  // Fetch categories from Firestore
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -47,27 +46,20 @@ const CreateDeal = () => {
 
     try {
       const user = auth.currentUser;
-
       if (!user) {
         alert('Please login first.');
         navigate('/merchant-login');
         return;
       }
 
-      // Fetch merchant name from users collection
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const userData = userDoc.data();
       const merchantName = userData?.name || 'Unknown Merchant';
 
       const dealData = {
-        title: form.title,
-        description: form.description,
+        ...form,
         price: parseFloat(form.price),
         discount: parseInt(form.discount),
-        category: form.category,
-        startDate: form.startDate,
-        endDate: form.endDate,
-        imageUrl: form.imageUrl,
         topDeal: false,
         approved: false,
         createdAt: serverTimestamp(),
@@ -88,52 +80,70 @@ const CreateDeal = () => {
 
   return (
     <>
-      <header className="navbar"></header>
-
       <div className="create-deal-container">
         <h2>Create New Deal</h2>
         <form className="deal-form" onSubmit={handleSubmit}>
-          <label>Deal Title</label>
-          <input name="title" value={form.title} onChange={handleChange} required />
+          <div className="form-group">
+            <label>Deal Title</label>
+            <input name="title" value={form.title} onChange={handleChange} required />
+          </div>
 
-          <label>Description</label>
-          <textarea name="description" value={form.description} onChange={handleChange} required />
+          <div className="form-group">
+            <label>Description</label>
+            <textarea name="description" value={form.description} onChange={handleChange} required />
+          </div>
 
-          <label>Price ($)</label>
-          <input name="price" type="number" value={form.price} onChange={handleChange} required />
+          <div className="form-group">
+            <label>Price ($)</label>
+            <input name="price" type="number" value={form.price} onChange={handleChange} required />
+          </div>
 
-          <label>Discount (%)</label>
-          <input name="discount" type="number" value={form.discount} onChange={handleChange} required />
+          <div className="form-group">
+            <label>Discount (%)</label>
+            <input name="discount" type="number" value={form.discount} onChange={handleChange} required />
+          </div>
 
-          <label>Category</label>
-          <select name="category" value={form.category} onChange={handleChange} required>
-            <option value="">Select category</option>
-            {categories.map((cat, idx) => (
-              <option key={idx} value={cat}>{cat}</option>
-            ))}
-          </select>
+          <div className="form-group">
+            <label>Category</label>
+            <select name="category" value={form.category} onChange={handleChange} required>
+              <option value="">Select category</option>
+              {categories.map((cat, idx) => (
+                <option key={idx} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
 
-          <label>Start Date</label>
-          <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+          <div className="form-group">
+            <label>Start Date</label>
+            <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
+          </div>
 
-          <label>End Date</label>
-          <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+          <div className="form-group">
+            <label>End Date</label>
+            <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+          </div>
 
-          <label>Image URL</label>
-          <input
-            name="imageUrl"
-            type="url"
-            placeholder="https://example.com/image.jpg"
-            value={form.imageUrl}
-            onChange={handleChange}
-            required
-          />
-          {form.imageUrl && (
-            <img
-              src={form.imageUrl}
-              alt="Preview"
-              style={{ width: '200px', marginTop: '10px', borderRadius: '8px' }}
+          <div className="form-group">
+            <label>Image URL</label>
+            <input
+              name="imageUrl"
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={form.imageUrl}
+              onChange={handleChange}
+              required
             />
+          </div>
+
+          {form.imageUrl && (
+            <div className="form-group image-preview-container">
+              <label>Preview</label>
+              <img
+                src={form.imageUrl}
+                alt="Preview"
+                className="preview-image"
+              />
+            </div>
           )}
 
           <div className="form-actions">

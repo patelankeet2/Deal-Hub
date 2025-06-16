@@ -33,11 +33,11 @@ const FeedbackPage = () => {
  
   return (
     <div className="feedback-page">
-      <h2>We value your feedback</h2>
+      <h2>We Value Your Feedback</h2>
  
       {submitted ? (
         <div className="thank-you">
-          <p>✅ Thanks for your feedback!</p>
+          <p>✅ Thank you for sharing your feedback!</p>
         </div>
       ) : (
         <form className="feedback-form" onSubmit={handleSubmit}>
@@ -45,7 +45,7 @@ const FeedbackPage = () => {
           <input
             type="text"
             name="name"
-            placeholder="Your name"
+            placeholder="Enter your name"
             value={form.name}
             onChange={handleChange}
             required
@@ -63,7 +63,7 @@ const FeedbackPage = () => {
           <label>Comment</label>
           <textarea
             name="comment"
-            placeholder="Write your review..."
+            placeholder="Write your experience..."
             value={form.comment}
             onChange={handleChange}
             required
@@ -72,6 +72,10 @@ const FeedbackPage = () => {
           <button type="submit">Submit Feedback</button>
         </form>
       )}
+    {/* Footer */}
+    <footer className="footer">
+      <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };

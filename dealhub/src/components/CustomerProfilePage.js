@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CustomerProfilePage.css';
-import { auth, db, storage } from '../firebaseConfig';
-import {
-  doc,
-  getDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { auth, db } from '../firebaseConfig';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
  
 const CustomerProfilePage = () => {
   const user = auth.currentUser;
@@ -17,8 +12,6 @@ const CustomerProfilePage = () => {
     address: '',
     imageUrl: '',
   });
-  const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview] = useState('');
  
   useEffect(() => {
     const fetchProfile = async () => {
@@ -29,14 +22,12 @@ const CustomerProfilePage = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setProfile({
-          ...profile,
           name: data.name || '',
           email: data.email || user.email,
           phone: data.phone || '',
           address: data.address || '',
           imageUrl: data.imageUrl || '',
         });
-        setPreview(data.imageUrl || '');
       }
     };
  
@@ -47,46 +38,40 @@ const CustomerProfilePage = () => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
  
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
-    setPreview(URL.createObjectURL(file));
-  };
- 
   const handleSave = async (e) => {
     e.preventDefault();
     if (!user) return;
  
     const docRef = doc(db, 'users', user.uid);
-    let updatedData = {
+    await updateDoc(docRef, {
       name: profile.name,
       phone: profile.phone,
       address: profile.address,
-    };
+      imageUrl: profile.imageUrl
+    });
  
-    if (imageFile) {
-      const imageRef = ref(storage, `profiles/${user.uid}`);
-      await uploadBytes(imageRef, imageFile);
-      const downloadURL = await getDownloadURL(imageRef);
-      updatedData.imageUrl = downloadURL;
-    }
- 
-    await updateDoc(docRef, updatedData);
     alert('✅ Profile updated successfully!');
   };
  
   return (
     <div className="profile-page">
-      <h2>Your Profile</h2>
+      <h2>🧑‍💼 Your Profile</h2>
  
       <form className="profile-form" onSubmit={handleSave}>
         <div className="profile-photo">
-          {preview ? (
-            <img src={preview} alt="Profile" />
+          {profile.imageUrl ? (
+            <img src={profile.imageUrl} alt="Profile" />
           ) : (
             <div className="placeholder">No Image</div>
           )}
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <label>Photo URL</label>
+          <input
+            type="text"
+            name="imageUrl"
+            placeholder="Paste image URL here"
+            value={profile.imageUrl}
+            onChange={handleChange}
+          />
         </div>
  
         <label>Name</label>
@@ -101,8 +86,12 @@ const CustomerProfilePage = () => {
         <label>Address</label>
         <textarea name="address" value={profile.address} onChange={handleChange} />
  
-        <button type="submit">Save Changes</button>
+        <button type="submit">💾 Save Changes</button>
       </form>
+    {/* Footer */}
+    <footer className="footer">
+        <p>© 2025 DealHub. All rights reserved.</p>
+    </footer>
     </div>
   );
 };

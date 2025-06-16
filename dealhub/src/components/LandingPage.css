@@ -1,179 +1,184 @@
 .landing-page {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: #f9fafb;
   color: #111827;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
  
-/* ================= HERO SECTION ================= */
+/* HERO */
 .hero {
-  height: 65vh;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
-  text-align: center;
-}
- 
-.hero-overlay {
   color: white;
-  max-width: 800px;
+  text-align: center;
+  padding: 0 1rem;
 }
  
-.hero-overlay h1 {
+.hero-content h1 {
   font-size: 2.8rem;
   font-weight: 700;
   margin-bottom: 12px;
-  line-height: 1.2;
 }
  
-.hero-overlay p {
-  font-size: 1.25rem;
-  font-weight: 400;
-  margin-bottom: 24px;
+.hero-content p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
  
-/* ================= SEARCH BAR ================= */
+/* SEARCH BAR */
 .search-bar {
-  padding: 24px;
+  background: white;
+  padding: 1.5rem;
   display: flex;
   justify-content: center;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
  
 .search-bar input {
+  max-width: 480px;
   width: 100%;
-  max-width: 500px;
   padding: 12px 16px;
-  border: 1px solid #d1d5db;
   border-radius: 8px;
+  border: 1px solid #d1d5db;
   font-size: 1rem;
-  transition: border 0.3s ease;
+  transition: border-color 0.3s ease;
 }
  
 .search-bar input:focus {
-  outline: none;
   border-color: #6366f1;
+  outline: none;
 }
  
-/* ================= TRENDING DEALS ================= */
+/* TRENDING DEALS */
 .trending-deals {
-  padding: 60px 10%;
+  padding: 3rem 8%;
   text-align: center;
 }
  
 .trending-deals h2 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: 40px;
-  color: #1f2937;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
  
-/* ================= DEAL CARD GRID ================= */
+/* DEAL CARDS */
 .deals-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
  
 .deal-card {
-  background-color: #ffffff;
+  background: white;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
  
 .deal-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
  
 .deal-card img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: contain;
-  background-color: #f3f4f6;
-  padding: 12px;
+  background: #f3f4f6;
+  padding: 10px;
 }
  
-.deal-card h4 {
-  font-size: 1.15rem;
+.deal-info {
+  padding: 1rem;
+}
+ 
+.deal-info h4 {
+  font-size: 1.1rem;
   font-weight: 600;
-  margin: 16px 0 6px;
-  color: #1f2937;
-  text-align: center;
-  padding: 0 12px;
+  margin-bottom: 0.5rem;
 }
  
 .price {
   font-size: 1rem;
-  margin-bottom: 10px;
-  color: #374151;
+  margin-bottom: 0.75rem;
 }
  
 .old-price {
-  color: #9ca3af;
   text-decoration: line-through;
-  margin-right: 6px;
+  color: #9ca3af;
+  margin-right: 0.5rem;
 }
  
 .new-price {
   color: #ef4444;
-  font-weight: 700;
+  font-weight: bold;
 }
  
-/* ================= DEAL BUTTON ================= */
-.deal-card button {
+/* BUTTON */
+.deal-info button {
   background-color: #6366f1;
-  color: #ffffff;
+  color: white;
+  padding: 10px 20px;
   border: none;
-  padding: 10px 24px;
   border-radius: 6px;
-  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
 }
  
-.deal-card button:hover {
+.deal-info button:hover {
   background-color: #4f46e5;
 }
  
-/* ================= FOOTER ================= */
+/* FOOTER */
 .footer {
+  margin-top: auto;
+  padding: 1.5rem 10%;
   background-color: #111827;
-  color: #ffffff;
-  padding: 24px 10%;
+  color: white;
   text-align: center;
   font-size: 0.9rem;
-  margin-top: auto;
 }
  
-/* ================= RESPONSIVE ADJUSTMENTS ================= */
-@media screen and (max-width: 768px) {
-  .hero-overlay h1 {
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-content h1 {
     font-size: 2rem;
   }
  
-  .hero-overlay p {
+  .hero-content p {
     font-size: 1rem;
   }
  
-  .search-bar input {
-    width: 90%;
+  .trending-deals {
+    padding: 2rem 5%;
   }
+}
  
-  .trending-deals h2 {
-    font-size: 1.8rem;
-  }
+.greeting-bar {
+  background-color: #eef2ff;
+  color: #1e3a8a;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+ 
+.greeting-bar .avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4f46e5;
 }
