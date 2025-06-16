@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebaseConfig';
@@ -7,6 +7,7 @@ import './Navbar.css';
 const Navbar = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -14,12 +15,20 @@ const Navbar = () => {
     });
   };
 
-  return (
-    <nav className="navbar">
-      <div className="logo" onClick={() => navigate('/')}>DealHub</div>
-      <div className="nav-links">
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-        {/* Unauthenticated visitor */}
+  return (
+    <nav className="main-navbar">
+      <div className="navbar-header">
+        <div className="logo" onClick={() => navigate('/')}>DealHub</div>
+        <div className="hamburger" onClick={toggleMenu}>
+          ☰
+        </div>
+      </div>
+
+      <div className={`nav-links ${isMenuOpen ? 'show' : ''}`}>
         {!user && (
           <>
             <Link to="/landing">Home</Link>
@@ -30,7 +39,6 @@ const Navbar = () => {
           </>
         )}
 
-        {/* Customer */}
         {user && role === 'customer' && (
           <>
             <Link to="/landing">Home</Link>
@@ -38,11 +46,10 @@ const Navbar = () => {
             <Link to="/cart">Cart</Link>
             <Link to="/orders">Orders</Link>
             <Link to="/profile">Profile</Link>
-            <button onClick={handleLogout}>Logout</button>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </>
         )}
 
-        {/* Merchant */}
         {user && role === 'merchant' && (
           <>
             <Link to="/merchant-dashboard">Dashboard</Link>
@@ -51,11 +58,10 @@ const Navbar = () => {
             <Link to="/merchant-deals">My Deals</Link>
             <Link to="/merchant-customers">Customers</Link>
             <Link to="/settings">Settings</Link>
-            <button onClick={handleLogout}>Logout</button>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </>
         )}
 
-        {/* Admin */}
         {user && role === 'admin' && (
           <>
             <Link to="/admin-dashboard">Dashboard</Link>
@@ -64,10 +70,9 @@ const Navbar = () => {
             <Link to="/admin-manage-category">Manage Category</Link>
             <Link to="/admin-earnings">Earnings</Link>
             <Link to="/admin-profile">Profile</Link>
-            <button onClick={handleLogout}>Logout</button>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </>
         )}
-
       </div>
     </nav>
   );

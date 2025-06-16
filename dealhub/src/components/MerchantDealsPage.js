@@ -8,6 +8,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MerchantDealsPage = () => {
   const [deals, setDeals] = useState([]);
+  const [filteredDeals, setFilteredDeals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [merchantEmail, setMerchantEmail] = useState(null);
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const MerchantDealsPage = () => {
           };
         });
         setDeals(list);
+        setFilteredDeals(list);
       } catch (error) {
         console.error('Error fetching merchant deals:', error);
       } finally {
@@ -56,6 +59,16 @@ const MerchantDealsPage = () => {
 
     fetchDeals();
   }, [merchantEmail]);
+
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = deals.filter(deal =>
+      deal.title.toLowerCase().includes(term) ||
+      deal.category.toLowerCase().includes(term)
+    );
+    setFilteredDeals(filtered);
+  };
 
   const handleEdit = (id) => {
     navigate(`/edit-deal/${id}`);
@@ -68,46 +81,60 @@ const MerchantDealsPage = () => {
 
   return (
     <div className="merchant-deals-page">
-      <h2>All My Deals</h2>
+      <h2>📦 My Deals Overview</h2>
+
+      <input
+        className="search-input"
+        type="text"
+        placeholder="Search deals by title or category..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
 
       {loading ? (
-        <p>Loading deals...</p>
-      ) : deals.length === 0 ? (
-        <p>No deals found.</p>
+        <p className="loading">Loading deals...</p>
+      ) : filteredDeals.length === 0 ? (
+        <p className="no-deals">No deals match your search.</p>
       ) : (
-        <table className="merchant-deals-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Price ($)</th>
-              <th>Discount (%)</th>
-              <th>Final Profit ($)</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {deals.map((deal) => (
-              <tr key={deal.id}>
-                <td>{deal.title}</td>
-                <td>{deal.category}</td>
-                <td>{deal.price}</td>
-                <td>{deal.discount}</td>
-                <td>${deal.finalProfit}</td>
-                <td>
-                  <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
-                    {deal.approved ? 'Approved' : 'Pending'}
-                  </span>
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(deal.id)}><FaEdit /></button>
-                  <button onClick={() => handleDelete(deal.id)} className="delete"><FaTrash /></button>
-                </td>
+        <div className="table-wrapper">
+          <table className="merchant-deals-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price ($)</th>
+                <th>Discount (%)</th>
+                <th>Final Profit ($)</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredDeals.map((deal) => (
+                <tr key={deal.id}>
+                  <td>{deal.title}</td>
+                  <td>{deal.category}</td>
+                  <td>{deal.price}</td>
+                  <td>{deal.discount}</td>
+                  <td>${deal.finalProfit}</td>
+                  <td>
+                    <span className={`status ${deal.approved ? 'approved' : 'pending'}`}>
+                      {deal.approved ? 'Approved' : 'Pending'}
+                    </span>
+                  </td>
+                  <td>
+                    <button onClick={() => handleEdit(deal.id)} title="Edit">
+                      <FaEdit />
+                    </button>
+                    <button onClick={() => handleDelete(deal.id)} className="delete" title="Delete">
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

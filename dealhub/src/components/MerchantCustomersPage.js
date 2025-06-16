@@ -6,6 +6,8 @@ import { format } from 'date-fns';
 
 const MerchantCustomersPage = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const user = auth.currentUser;
 
@@ -23,7 +25,6 @@ const MerchantCustomersPage = () => {
           ...doc.data()
         }));
 
-        // Extract only items where merchantId matches logged-in merchant
         const merchantOrders = [];
 
         allOrders.forEach(order => {
@@ -43,6 +44,7 @@ const MerchantCustomersPage = () => {
         });
 
         setOrders(merchantOrders);
+        setFilteredOrders(merchantOrders);
       } catch (error) {
         console.error('Error fetching customer orders:', error);
       } finally {
@@ -53,37 +55,58 @@ const MerchantCustomersPage = () => {
     fetchOrders();
   }, [user]);
 
+  const handleSearch = (e) => {
+    const keyword = e.target.value.toLowerCase();
+    setSearchTerm(keyword);
+    const filtered = orders.filter(order =>
+      order.customerName.toLowerCase().includes(keyword) ||
+      order.customerEmail.toLowerCase().includes(keyword) ||
+      order.dealTitle.toLowerCase().includes(keyword)
+    );
+    setFilteredOrders(filtered);
+  };
+
   return (
     <div className="merchant-customers-page">
       <h2>Customers Who Purchased Your Deals</h2>
 
+      <input
+        type="text"
+        placeholder="Search by name, email, or deal..."
+        className="search-input"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+
       {loading ? (
         <p>Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <p>No customer purchases found yet.</p>
+      ) : filteredOrders.length === 0 ? (
+        <p>No matching customer purchases found.</p>
       ) : (
-        <table className="customers-table">
-          <thead>
-            <tr>
-              <th>Customer Name</th>
-              <th>Email</th>
-              <th>Deal Title</th>
-              <th>Paid ($)</th>
-              <th>Purchase Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={index}>
-                <td>{order.customerName}</td>
-                <td>{order.customerEmail}</td>
-                <td>{order.dealTitle}</td>
-                <td>${order.pricePaid}</td>
-                <td>{order.createdAt}</td>
+        <div className="table-wrapper">
+          <table className="customers-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Deal Title</th>
+                <th>Paid ($)</th>
+                <th>Purchase Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.customerName}</td>
+                  <td>{order.customerEmail}</td>
+                  <td>{order.dealTitle}</td>
+                  <td>${order.pricePaid}</td>
+                  <td>{order.createdAt}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

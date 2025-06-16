@@ -6,17 +6,35 @@
 }
 
 .merchant-customers-page h2 {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   color: #333;
+  text-align: center;
+}
+
+.search-input {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline-color: #6366f1;
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .customers-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  min-width: 800px;
 }
 
 .customers-table th,
@@ -30,4 +48,29 @@
   background: #f3f4f6;
   font-weight: 600;
   color: #374151;
+}
+
+.customers-table td {
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .merchant-customers-page {
+    padding: 1rem;
+  }
+
+  .search-input {
+    width: 90%;
+  }
+
+  .customers-table th,
+  .customers-table td {
+    padding: 0.75rem;
+  }
+
+  .customers-table {
+    font-size: 0.85rem;
+  }
 }
