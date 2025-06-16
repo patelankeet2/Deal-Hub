@@ -3,37 +3,57 @@
   font-family: 'Segoe UI', sans-serif;
   background: #f9fafb;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .merchant-deals-page h2 {
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #111827;
+  text-align: center;
+}
+
+.loading,
+.no-deals {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-top: 2rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .merchant-deals-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .merchant-deals-table th,
 .merchant-deals-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f1f1f1;
   text-align: left;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .merchant-deals-table th {
-  background: #f3f4f6;
+  background-color: #f3f4f6;
   font-weight: 600;
   color: #374151;
 }
 
+.merchant-deals-table td {
+  font-size: 0.95rem;
+  color: #374151;
+}
+
 .status {
-  padding: 0.25rem 0.5rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 500;
@@ -54,9 +74,36 @@ button {
   border: none;
   font-size: 1rem;
   cursor: pointer;
-  margin-right: 0.5rem;
+  margin-right: 0.4rem;
+  transition: transform 0.1s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 
 button.delete {
-  color: red;
+  color: #dc2626;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .merchant-deals-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .merchant-deals-table th,
+  .merchant-deals-table td {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .merchant-deals-page {
+    padding: 1rem;
+  }
+
+  .merchant-deals-table {
+    font-size: 0.85rem;
+  }
 }
