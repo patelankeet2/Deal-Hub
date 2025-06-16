@@ -52,7 +52,7 @@ const AnalyticsPage = () => {
 
           if (deal.approved) {
             const profit = deal.price * (1 - deal.discount / 100);
-            const merchantEarning = profit * 0.95; // Deduct 5% admin commission
+            const merchantEarning = profit * 0.95;
             totalEarnings += merchantEarning;
             dealLabels.push(deal.title);
             earningsData.push(merchantEarning);
@@ -97,6 +97,7 @@ const AnalyticsPage = () => {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true, position: 'top' },
       tooltip: { mode: 'index', intersect: false },
@@ -104,7 +105,6 @@ const AnalyticsPage = () => {
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { stepSize: 1 },
         grid: { color: '#e5e7eb' },
         title: {
           display: true,
@@ -130,7 +130,7 @@ const AnalyticsPage = () => {
       <h2>📊 Deal Performance Analytics</h2>
 
       {!chartData ? (
-        <p>Loading data...</p>
+        <p className="loading">Loading data...</p>
       ) : (
         <>
           <div className="summary-cards">
@@ -145,14 +145,18 @@ const AnalyticsPage = () => {
             </div>
           </div>
 
-          <div className="chart-container">
+          <div className="chart-section">
             <h4>📂 Deals by Category</h4>
-            <Bar data={chartData.categoryBar} options={chartOptions} />
+            <div className="chart-wrapper">
+              <Bar data={chartData.categoryBar} options={chartOptions} />
+            </div>
           </div>
 
-          <div className="chart-container">
+          <div className="chart-section">
             <h4>💰 Earnings per Deal</h4>
-            <Line data={chartData.earningsLine} options={chartOptions} />
+            <div className="chart-wrapper">
+              <Line data={chartData.earningsLine} options={chartOptions} />
+            </div>
           </div>
         </>
       )}
