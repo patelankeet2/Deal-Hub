@@ -1,6 +1,6 @@
 .manage-users-container {
   font-family: 'Poppins', sans-serif;
-  padding: 2rem 1rem;
+  padding: 2rem 5%;
   background: #f8fafc;
   min-height: 100vh;
   color: #1f2937;
@@ -38,7 +38,7 @@
 .users-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 800px;
 }
  
 .users-table th,
@@ -53,6 +53,7 @@
   background: #f1f5f9;
   font-weight: 600;
   color: #374151;
+  text-transform: uppercase;
 }
  
 .users-table td {
@@ -82,7 +83,6 @@ button.approve {
   background: #10b981;
   color: white;
 }
- 
 button.approve:hover {
   background: #059669;
 }
@@ -91,7 +91,6 @@ button.reject {
   background: #facc15;
   color: #1f2937;
 }
- 
 button.reject:hover {
   background: #eab308;
 }
@@ -100,7 +99,6 @@ button.delete {
   background: #ef4444;
   color: white;
 }
- 
 button.delete:hover {
   background: #dc2626;
 }
@@ -112,8 +110,8 @@ button.delete:hover {
   color: #6b7280;
 }
  
-/* Responsive improvement */
-@media (max-width: 768px) {
+/* 📱 Responsive enhancements */
+@media (max-width: 1024px) {
   .users-table th,
   .users-table td {
     padding: 0.75rem;
@@ -126,5 +124,27 @@ button.delete:hover {
  
   .search-bar input {
     max-width: 100%;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .manage-users-container {
+    padding: 1.5rem 2%;
+  }
+ 
+  .button-group {
+    flex-direction: column;
+    gap: 4px;
+  }
+ 
+  .users-table button {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+ 
+  .users-table th,
+  .users-table td {
+    white-space: nowrap;
   }
 }
