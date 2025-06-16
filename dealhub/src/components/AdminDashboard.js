@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 import {
   ResponsiveContainer,
@@ -11,8 +11,10 @@ import {
   CartesianGrid,
   Tooltip
 } from 'recharts';
+import { useNavigate } from 'react-router-dom';
  
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalMerchants: 0,
@@ -20,6 +22,7 @@ const AdminDashboard = () => {
     approvedDeals: 0,
     totalEarnings: 0
   });
+ 
   const [adminProfile, setAdminProfile] = useState({ name: '', photo: '' });
   const [earningsData, setEarningsData] = useState([]);
  
@@ -42,23 +45,22 @@ const AdminDashboard = () => {
         let approvedDeals = 0;
         let totalEarnings = 0;
  
-        const emailToName = {};
-        usersSnap.forEach(doc => {
-          const user = doc.data();
+        const earningsList = [];
+ 
+        for (const docSnap of usersSnap.docs) {
+          const user = docSnap.data();
           totalUsers++;
           if (user.role === 'merchant') totalMerchants++;
-          emailToName[user.email] = user.name || 'Unnamed';
-          if (doc.id === auth.currentUser?.uid) {
+ 
+          if (docSnap.id === auth.currentUser?.uid) {
             setAdminProfile({
               name: user.name || 'Admin',
               photo: user.photo || '/default-avatar.png'
             });
           }
-        });
+        }
  
-        const earningsList = [];
- 
-        dealsSnap.forEach(doc => {
+        dealsSnap.forEach((doc) => {
           const deal = doc.data();
           totalDeals++;
           if (deal.approved) {
@@ -97,36 +99,24 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="admin-header">
         <div className="admin-greeting">
-          <h2>{getGreeting()}, {adminProfile.name}!</h2>
+          <h2>{getGreeting()}, {adminProfile.name} 👋</h2>
+          <p>Welcome back to your dashboard</p>
         </div>
         <img
-          src={adminProfile.photo || '/default-avatar.png'}
+          src={adminProfile.photo}
           alt="Admin Avatar"
-          className="admin-avatar"
+          className="admin-avatar clickable"
+          title="Go to Profile"
+          onClick={() => navigate('/admin-profile')}
         />
       </div>
  
       <div className="admin-grid">
-        <div className="admin-card">
-          <p>Total Users</p>
-          <h3>{stats.totalUsers}</h3>
-        </div>
-        <div className="admin-card">
-          <p>Total Merchants</p>
-          <h3>{stats.totalMerchants}</h3>
-        </div>
-        <div className="admin-card">
-          <p>Total Deals</p>
-          <h3>{stats.totalDeals}</h3>
-        </div>
-        <div className="admin-card">
-          <p>Approved Deals</p>
-          <h3>{stats.approvedDeals}</h3>
-        </div>
-        <div className="admin-card highlight">
-          <p>Total Earnings (5%)</p>
-          <h3>${stats.totalEarnings.toFixed(2)}</h3>
-        </div>
+        <div className="admin-card"><p>Total Users</p><h3>{stats.totalUsers}</h3></div>
+        <div className="admin-card"><p>Total Merchants</p><h3>{stats.totalMerchants}</h3></div>
+        <div className="admin-card"><p>Total Deals</p><h3>{stats.totalDeals}</h3></div>
+        <div className="admin-card"><p>Approved Deals</p><h3>{stats.approvedDeals}</h3></div>
+        <div className="admin-card highlight"><p>Total Earnings (5%)</p><h3>${stats.totalEarnings.toFixed(2)}</h3></div>
       </div>
  
       <div className="admin-chart">
