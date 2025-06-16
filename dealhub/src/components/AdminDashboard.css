@@ -8,6 +8,7 @@
   flex-direction: column;
 }
  
+/* Header Section */
 .admin-header {
   display: flex;
   justify-content: space-between;
@@ -23,6 +24,11 @@
   color: #111827;
 }
  
+.admin-greeting p {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+ 
 .admin-avatar {
   width: 60px;
   height: 60px;
@@ -36,6 +42,11 @@
   transform: scale(1.05);
 }
  
+.clickable {
+  cursor: pointer;
+}
+ 
+/* Dashboard Cards */
 .admin-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -73,6 +84,7 @@
   border: 1px solid #fde68a;
 }
  
+/* Chart */
 .admin-chart {
   background: #ffffff;
   border-radius: 12px;
@@ -89,6 +101,7 @@
   text-align: center;
 }
  
+/* Footer */
 .footer {
   text-align: center;
   margin-top: auto;
@@ -97,7 +110,7 @@
   padding: 2rem 0;
 }
  
-/* RESPONSIVE */
+/* Responsive Styles */
 @media (max-width: 768px) {
   .admin-header {
     flex-direction: column;
