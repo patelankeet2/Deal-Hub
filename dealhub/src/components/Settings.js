@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import './Settings.css';
 import { auth, db, storage } from '../firebaseConfig';
