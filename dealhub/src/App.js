@@ -56,10 +56,10 @@ function App() {
           <Route path="/merchant-register" element={<MerchantRegister />} />
           <Route path="/merchant-forgot-password" element={<MerchantForgotPassword />} />
           <Route path="/forgot-password" element={<CustomerForgotPassword />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
 
           {/* Protected routes for customer */}
           <Route path="/payment" element={<ProtectedRoute element={PaymentPage} allowedRoles={['customer']} />} />
-          <Route path="/feedback" element={<ProtectedRoute element={FeedbackPage} allowedRoles={['customer']} />} />
           <Route path="/orders" element={<ProtectedRoute element={OrderTrackingPage} allowedRoles={['customer']} />} />
           <Route path="/profile" element={<ProtectedRoute element={CustomerProfilePage} allowedRoles={['customer']} />} />
 

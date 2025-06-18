@@ -83,7 +83,7 @@ const PaymentPage = () => {
       {paid ? (
         <div className="qr-section">
           <p className="thank-you">🎉 Thank you for your purchase!</p>
-          <QRCodeCanvas value="http://localhost:3000/feedback" size={160} />
+          <QRCodeCanvas value="https://dealhub-b48fa.web.app/feedback" size={160} />
           <p className="scan-text">📱 Scan this QR code to give feedback</p>
           <button className="feedback-btn" onClick={() => navigate('/feedback')}>
             Or Click Here to Give Feedback
