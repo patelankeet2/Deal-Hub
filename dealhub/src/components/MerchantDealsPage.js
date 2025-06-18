@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './MerchantDealsPage.css';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db, auth } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -35,15 +35,15 @@ const MerchantDealsPage = () => {
       try {
         const q = query(collection(db, 'deals'), where('createdBy', '==', merchantEmail));
         const snapshot = await getDocs(q);
-        const list = snapshot.docs.map(doc => {
-          const data = doc.data();
+        const list = snapshot.docs.map(docSnap => {
+          const data = docSnap.data();
           const price = Number(data.price) || 0;
           const discount = Number(data.discount) || 0;
           const discountedPrice = price * (1 - discount / 100);
           const finalProfit = discountedPrice - discountedPrice * 0.05;
 
           return {
-            id: doc.id,
+            id: docSnap.id,
             ...data,
             finalProfit: discountedPrice > 0 ? finalProfit.toFixed(2) : '0.00'
           };
@@ -74,9 +74,19 @@ const MerchantDealsPage = () => {
     navigate(`/edit-deal/${id}`);
   };
 
-  const handleDelete = (id) => {
-    alert(`Delete deal with ID: ${id}`);
-    // TODO: Implement Firestore deletion
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this deal?');
+    if (!confirmDelete) return;
+
+    try {
+      await deleteDoc(doc(db, 'deals', id));
+      setDeals(prev => prev.filter(deal => deal.id !== id));
+      setFilteredDeals(prev => prev.filter(deal => deal.id !== id));
+      alert('Deal deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting deal:', error);
+      alert('Failed to delete the deal.');
+    }
   };
 
   return (

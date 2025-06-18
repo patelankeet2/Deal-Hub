@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './MerchantDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebaseConfig';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  deleteDoc
+} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const MerchantDashboard = () => {
@@ -92,8 +100,18 @@ const MerchantDashboard = () => {
     else return 'Good Evening';
   };
 
-  const handleDelete = (title) => {
-    alert(`Delete ${title}`); // Replace with actual logic
+  const handleDelete = async (dealId, title) => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete the deal: "${title}"?`);
+    if (!confirmDelete) return;
+
+    try {
+      await deleteDoc(doc(db, 'deals', dealId));
+      setDeals(prevDeals => prevDeals.filter(deal => deal.id !== dealId));
+      alert(`Successfully deleted "${title}"`);
+    } catch (error) {
+      console.error("Error deleting deal:", error);
+      alert("Failed to delete deal. Please try again.");
+    }
   };
 
   const filteredDeals = deals.filter((deal) =>
@@ -158,7 +176,7 @@ const MerchantDashboard = () => {
                     <td>${deal.earning.toFixed(2)}</td>
                     <td className="action-buttons">
                       <button className="edit-deal-btn" onClick={() => navigate(`/edit-deal/${deal.id}`)}>✏️ Edit Deal</button>
-                      <button className="delete-deal-btn" onClick={() => handleDelete(deal.title)}>🗑 Delete</button>
+                      <button className="delete-deal-btn" onClick={() => handleDelete(deal.id, deal.title)}>🗑 Delete</button>
                     </td>
                   </tr>
                 ))}
