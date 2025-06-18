@@ -84,3 +84,66 @@ All notable changes to this project will be documented in this file.
   - Deal editing for merchants
   - Deal approval system for admins
   - Full earnings analytics with charts per merchant
+
+  # 📦 Deal Hub – Changelog
+
+## [v4.0.0] – 2025-06-18
+### 🎉 Final Stable Release
+
+#### ✅ Major Highlights
+- Fully integrated **Customer, Merchant, and Admin** dashboards
+- Completed **authentication flows** for all user types
+- End-to-end **deal lifecycle**: create → approve → display → purchase
+- Modern, clean, and **fully responsive UI** for all screens
+- Stable **Firebase integration** (Auth, Firestore, Storage)
+- Basic **role-based routing** and protection
+
+---
+
+#### 👤 Customer Features
+- 🔍 Browse & search deals with category and keyword filters
+- 🛒 Add to cart, checkout with fake payment, and view order history
+- 📝 Leave feedback with rating system
+- 👤 Manage personal profile with editable avatar (via URL)
+- 📦 Track orders with status and reordering options
+
+#### 🛍️ Merchant Features
+- ➕ Create/Edit/Delete deals with categories and images
+- 📈 View analytics: purchase count & performance charts
+- 👥 View customers and their purchase history
+- 🎛️ Full dashboard experience with greeting and links
+
+#### 🛡️ Admin Features
+- 👁️ Approve or reject merchant accounts and submitted deals
+- 👥 Manage users and perform soft deletes
+- 📊 Platform-wide analytics and activity stats
+- 🎯 Moderate categories and earnings
+
+---
+
+#### 🎨 UI/UX & Responsiveness
+- Complete UI overhaul across all modules (Customer, Merchant, Admin)
+- Used **CSS Modules** with custom layout consistency
+- Ensured **responsive design** across devices (desktop/tablet/mobile)
+- Added avatar greeting, setting links, clean typography & color accessibility
+
+---
+
+#### 🔐 System Enhancements
+- 🔒 Protected routing with `ProtectedRoute.js`
+- 🌐 Global error fallback with `NotFound.js`
+- 🔧 `AuthContext.js` for central auth state management
+
+---
+
+#### 🧪 Testing & QA
+- Manual testing across all features and user types
+- QA acceptance criteria finalized and documented
+- Code reviewed via GitHub PRs with team-wide collaboration
+
+---
+
+#### 👨‍💻 Contributors
+- **Ankeet Patel** – Merchant Module, Routing, Auth, Protected UI
+- **Mazhar** – Admin Panel, User/Auth Management
+- **Samika** – Customer Flow, Feedback, Cart & Checkout
