@@ -18,20 +18,66 @@
 ```
 
 patelankeet2-deal-hub/
+├── README.md
 └── dealhub/
-├── firebase.json                  # Firebase deployment config
-├── .firebaserc                   # Firebase project alias
-├── public/                       # Public files (index.html, manifest, robots.txt)
-├── src/
-│   ├── App.js                    # App entry with routes
-│   ├── firebaseConfig.js         # Firebase setup
-│   ├── context/AuthContext.js    # Global authentication context
-│   ├── components/               # All feature modules (Admin, Merchant, Customer)
-│   ├── pages/NotFound.js         # 404 route handler
-│   └── index.js, styles, tests   # Main entry and assets
-├── package.json
-├── CHANGELOG.md                  # Version log
-└── README.md                     # You're here!
+    ├── README.md                      # You are here
+    ├── firebase.json                  # Firebase deployment configuration
+    ├── .firebaserc                   # Firebase project alias settings
+    ├── .gitignore
+    ├── package.json
+    ├── package-lock.json
+    ├── CHANGELOG.md                  # Project version history
+    ├── public/                       # Static assets
+    │   ├── index.html                # App HTML entry point
+    │   ├── manifest.json             # Web app manifest
+    │   └── robots.txt                # SEO rules for bots
+    ├── src/
+    │   ├── App.js                    # App entry with routing
+    │   ├── App.css                   # Global styles
+    │   ├── App.test.js               # Sample test config
+    │   ├── firebaseConfig.js         # Firebase project initialization
+    │   ├── index.js                  # ReactDOM entry point
+    │   ├── index.css                 # Base CSS file
+    │   ├── reportWebVitals.js        # Performance metrics (optional)
+    │   ├── setupTests.js             # Test environment setup
+    │   ├── context/
+    │   │   └── AuthContext.js        # Global auth state using React Context API
+    │   ├── components/               # All feature-specific components
+    │   │   ├── AdminDashboard.{js,css}
+    │   │   ├── AdminEarnings.{js,css}
+    │   │   ├── AdminManageCategory.{js,css}
+    │   │   ├── AdminManageDeals.{js,css}
+    │   │   ├── AdminManageUsers.{js,css}
+    │   │   ├── AdminProfile.{js,css}
+    │   │   ├── AnalyticsPage.{js,css}
+    │   │   ├── CartPage.{js,css}
+    │   │   ├── CreateDeal.{js,css}
+    │   │   ├── CustomerForgotPassword.js
+    │   │   ├── CustomerProfilePage.{js,css}
+    │   │   ├── DealDetailsPage.{js,css}
+    │   │   ├── DealsPage.{js,css}
+    │   │   ├── EditDealPage.js
+    │   │   ├── FeedbackPage.{js,css}
+    │   │   ├── LandingPage.{js,css}
+    │   │   ├── Login.{js,css}
+    │   │   ├── MerchantCustomersPage.{js,css}
+    │   │   ├── MerchantDashboard.{js,css}
+    │   │   ├── MerchantDealsPage.{js,css}
+    │   │   ├── MerchantForgotPassword.{js,css}
+    │   │   ├── MerchantLogin.{js,css}
+    │   │   ├── MerchantRegister.{js,css}
+    │   │   ├── Navbar.{js,css}
+    │   │   ├── OrderTrackingPage.{js,css}
+    │   │   ├── PaymentPage.{js,css}
+    │   │   ├── ProtectedRoute.js
+    │   │   ├── Register.js
+    │   │   ├── Settings.{js,css}
+    │   └── pages/
+    │       ├── NotFound.js
+    │       └── NotFound.css
+    └── .firebase/
+        └── hosting.YnVpbGQ.cache     # Firebase hosting cache
+
 
 ````
 
