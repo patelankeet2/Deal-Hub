@@ -1,4 +1,3 @@
-
 # 🛍️ Deal Hub - Discount Aggregator Platform
 
 **Deal Hub** is a role-based, full-stack web platform built with React and Firebase that allows users to browse and purchase limited-time deals, merchants to create and track offers, and admins to moderate users and deals. The system is designed to be responsive, scalable, and user-friendly across all devices.
@@ -13,73 +12,133 @@
 
 ---
 
+## 🚀 CI/CD with GitHub Actions + Firebase Hosting
+
+This project is deployed automatically using **GitHub Actions** and **Firebase Hosting**.
+
+### 🔄 Workflow Overview
+
+#### ✅ PR Preview Deployments
+- Every **pull request** (`pull_request`) triggers a workflow (`firebase-deploy-pr.yml`).
+- The app is built (`npm ci && npm run build`).
+- Firebase Hosting creates a **Preview Channel** and comments a unique preview URL in the PR.
+- Reviewers can test changes before merging.
+
+#### 🚀 Production Deployments
+- Any **merge to the `main` branch** triggers another workflow (`firebase-deploy-live.yml`).
+- The app is built and deployed to the **live site** (`channelId: live`) on Firebase Hosting.
+
+### 🔑 Secrets
+- `FIREBASE_SERVICE_ACCOUNT` → JSON service account key with **Firebase Hosting Admin** + **Service Account Token Creator** roles.
+- `GITHUB_TOKEN` → Automatically provided by GitHub to post PR comments and trigger deployments.
+
+### ✅ Deployment Steps
+1. Create a **feature branch** → push → open a PR.
+2. GitHub Actions builds the app and deploys to a **Preview Channel**.
+3. Preview URL is shown in the PR.
+4. Merge PR into **main**.
+5. GitHub Actions builds again and deploys to the **production site**.
+
+### 🛠 Rollback
+- All deployments are visible in the **Firebase Console → Hosting**.
+- Rollback can be done by selecting a previous deployment version.
+
+---
+
+
 ## 📁 Project Structure
 
-```
-
-patelankeet2-deal-hub/
-├── README.md
-└── dealhub/
-    ├── README.md                      # You are here
-    ├── firebase.json                  # Firebase deployment configuration
-    ├── .firebaserc                   # Firebase project alias settings
-    ├── .gitignore
+Directory structure:
+└── patelankeet2-dealhub2/
+    ├── README.md
+    ├── firebase.json
     ├── package.json
-    ├── package-lock.json
-    ├── CHANGELOG.md                  # Project version history
-    ├── public/                       # Static assets
-    │   ├── index.html                # App HTML entry point
-    │   ├── manifest.json             # Web app manifest
-    │   └── robots.txt                # SEO rules for bots
+    ├── TESTING_REFLECTION.md
+    ├── .firebaserc
+    ├── public/
+    │   ├── index.html
+    │   ├── manifest.json
+    │   └── robots.txt
     ├── src/
-    │   ├── App.js                    # App entry with routing
-    │   ├── App.css                   # Global styles
-    │   ├── App.test.js               # Sample test config
-    │   ├── firebaseConfig.js         # Firebase project initialization
-    │   ├── index.js                  # ReactDOM entry point
-    │   ├── index.css                 # Base CSS file
-    │   ├── reportWebVitals.js        # Performance metrics (optional)
-    │   ├── setupTests.js             # Test environment setup
-    │   ├── context/
-    │   │   └── AuthContext.js        # Global auth state using React Context API
-    │   ├── components/               # All feature-specific components
-    │   │   ├── AdminDashboard.{js,css}
-    │   │   ├── AdminEarnings.{js,css}
-    │   │   ├── AdminManageCategory.{js,css}
-    │   │   ├── AdminManageDeals.{js,css}
-    │   │   ├── AdminManageUsers.{js,css}
-    │   │   ├── AdminProfile.{js,css}
-    │   │   ├── AnalyticsPage.{js,css}
-    │   │   ├── CartPage.{js,css}
-    │   │   ├── CreateDeal.{js,css}
+    │   ├── App.css
+    │   ├── App.js
+    │   ├── App.test.js
+    │   ├── CHANGELOG.md
+    │   ├── firebaseConfig.js
+    │   ├── index.css
+    │   ├── index.js
+    │   ├── reportWebVitals.js
+    │   ├── setupTests.js
+    │   ├── components/
+    │   │   ├── AdminDashboard.css
+    │   │   ├── AdminDashboard.js
+    │   │   ├── AdminEarnings.css
+    │   │   ├── AdminEarnings.js
+    │   │   ├── AdminManageCategory.css
+    │   │   ├── AdminManageCategory.js
+    │   │   ├── AdminManageDeals.css
+    │   │   ├── AdminManageDeals.js
+    │   │   ├── AdminManageUsers.css
+    │   │   ├── AdminManageUsers.js
+    │   │   ├── AdminProfile.css
+    │   │   ├── AdminProfile.js
+    │   │   ├── AnalyticsPage.css
+    │   │   ├── AnalyticsPage.js
+    │   │   ├── CartPage.css
+    │   │   ├── CartPage.js
+    │   │   ├── CreateDeal.css
+    │   │   ├── CreateDeal.js
     │   │   ├── CustomerForgotPassword.js
-    │   │   ├── CustomerProfilePage.{js,css}
-    │   │   ├── DealDetailsPage.{js,css}
-    │   │   ├── DealsPage.{js,css}
+    │   │   ├── CustomerProfilePage.css
+    │   │   ├── CustomerProfilePage.js
+    │   │   ├── DealDetailsPage.css
+    │   │   ├── DealDetailsPage.js
+    │   │   ├── DealsPage.css
+    │   │   ├── DealsPage.js
     │   │   ├── EditDealPage.js
-    │   │   ├── FeedbackPage.{js,css}
-    │   │   ├── LandingPage.{js,css}
-    │   │   ├── Login.{js,css}
-    │   │   ├── MerchantCustomersPage.{js,css}
-    │   │   ├── MerchantDashboard.{js,css}
-    │   │   ├── MerchantDealsPage.{js,css}
-    │   │   ├── MerchantForgotPassword.{js,css}
-    │   │   ├── MerchantLogin.{js,css}
-    │   │   ├── MerchantRegister.{js,css}
-    │   │   ├── Navbar.{js,css}
-    │   │   ├── OrderTrackingPage.{js,css}
-    │   │   ├── PaymentPage.{js,css}
+    │   │   ├── FeedbackPage.css
+    │   │   ├── FeedbackPage.js
+    │   │   ├── LandingPage.css
+    │   │   ├── LandingPage.js
+    │   │   ├── Login.css
+    │   │   ├── Login.js
+    │   │   ├── MerchantCustomersPage.css
+    │   │   ├── MerchantCustomersPage.js
+    │   │   ├── MerchantDashboard.css
+    │   │   ├── MerchantDashboard.js
+    │   │   ├── MerchantDealsPage.css
+    │   │   ├── MerchantDealsPage.js
+    │   │   ├── MerchantForgotPassword.css
+    │   │   ├── MerchantForgotPassword.js
+    │   │   ├── MerchantLogin.css
+    │   │   ├── MerchantLogin.js
+    │   │   ├── MerchantRegister.css
+    │   │   ├── MerchantRegister.js
+    │   │   ├── Navbar.css
+    │   │   ├── Navbar.js
+    │   │   ├── Navbar.test.js
+    │   │   ├── OrderTrackingPage.css
+    │   │   ├── OrderTrackingPage.js
+    │   │   ├── PaymentPage.css
+    │   │   ├── PaymentPage.js
     │   │   ├── ProtectedRoute.js
     │   │   ├── Register.js
-    │   │   ├── Settings.{js,css}
+    │   │   ├── Settings.css
+    │   │   └── Settings.js
+    │   ├── context/
+    │   │   └── AuthContext.js
     │   └── pages/
-    │       ├── NotFound.js
-    │       └── NotFound.css
-    └── .firebase/
-        └── hosting.YnVpbGQ.cache     # Firebase hosting cache
+    │       ├── NotFound.css
+    │       └── NotFound.js
+    ├── .firebase/
+    │   └── hosting.YnVpbGQ.cache
+    └── .github/
+        └── workflows/
+            ├── firebase-deploy-live.yml
+            ├── firebase-deploy-pr.yml
+            ├── owasp-lite.yml
+            └── tests.yml
 
-
-````
 
 ---
 
@@ -118,7 +177,7 @@ patelankeet2-deal-hub/
 | Styling       | CSS, Bootstrap (custom styling) |
 | Storage       | Firebase Storage for images   |
 | State Mgmt    | React Context API             |
-| Deployment    | Firebase CLI, Live Hosting    |
+| Deployment    | Firebase CLI, GitHub Actions CI/CD |
 
 ---
 
@@ -135,72 +194,51 @@ patelankeet2-deal-hub/
 git clone https://github.com/patelankeet2/deal-hub
 cd dealhub
 npm install
-````
 
-### 🚀 Local Development
-
-```bash
+🚀 Local Development
 npm start
-```
 
-### 🔥 Firebase Deployment
-
-```bash
+🔥 Firebase Deployment
 firebase login
 firebase init hosting
 firebase deploy
-```
 
----
+📈 Contribution Overview
 
-## 🗂️ Folder Highlights
+📍 Ankeet Patel: Merchant Dashboard, Deal Management, Analytics, Routing, Navbar, Auth Logic, CI/CD Automation, Owasp Testing, Jest Unit testing & Automated deployment.
 
-* **`components/`**: Divided by feature
+📍 Mazhar: Admin dashboard, user moderation, and approvals
 
-  * Admin: `AdminDashboard.js`, `AdminProfile.js`, etc.
-  * Merchant: `CreateDeal.js`, `MerchantDashboard.js`, etc.
-  * Customer: `CartPage.js`, `LandingPage.js`, `FeedbackPage.js`, etc.
-* **`context/`**: Global authentication context
-* **`ProtectedRoute.js`**: Auth-based route control
-* **`firebaseConfig.js`**: Contains Firebase app configuration
+📍 Samika: Customer experience, feedback, cart, and checkout flow
 
----
+All members contributed to App.js and routing logic.
 
-## 📈 Contribution Overview
+🧪 Testing Strategy
 
-* 📍 **Ankeet Patel**: Merchant Dashboard, Deal Management, Analytics, Routing, Navbar, Auth Logic
-* 📍 **Mazhar**: Admin dashboard, user moderation, and approvals
-* 📍 **Samika**: Customer experience, feedback, cart, and checkout flow
+✅ Manual UI and UX testing across roles
 
-All members contributed to `App.js` and routing logic.
+✅ Browser compatibility testing (Chrome, Firefox)
 
----
+✅ Firebase Emulator tests (Auth + Firestore)
 
-## 🧪 Testing Strategy
+✅ Real-time validation & error handling
 
-* ✅ Manual UI and UX testing across roles
-* ✅ Browser compatibility testing (Chrome, Firefox)
-* ✅ Firebase Emulator tests (Auth + Firestore)
-* ✅ Real-time validation & error handling
-* ✅ Code reviewed and merged via pull requests
+✅ Code reviewed and merged via pull requests
 
----
+✅ Automated unit tests via tests.yml
 
-## 📌 Version History
+✅ Security checks via OWASP Lite workflow (owasp-lite.yml)
 
-Check `CHANGELOG.md` for full release notes and tracked changes.
+📌 Version History
 
----
+Check CHANGELOG.md for full release notes and tracked changes.
 
-## 📄 License
+📄 License
 
-This project is released under the **MIT License**.
+This project is released under the MIT License.
 
----
+🙌 Acknowledgements
 
-## 🙌 Acknowledgements
+Thanks to Otago Polytechnic and our mentors for guidance throughout Studio 3.
 
-Thanks to **Otago Polytechnic** and our mentors for guidance throughout Studio 3.
-
-> Made with 💻 using React, Firebase & Team Collaboration
-
+Made with 💻 using React, Firebase, GitHub Actions & Team Collaboration
