@@ -48,99 +48,71 @@ This project is deployed automatically using **GitHub Actions** and **Firebase H
 
 ## 📁 Project Structure
 
-Directory structure:
-└── patelankeet2-dealhub2/
-    ├── README.md
-    ├── firebase.json
-    ├── package.json
-    ├── TESTING_REFLECTION.md
-    ├── .firebaserc
-    ├── public/
-    │   ├── index.html
-    │   ├── manifest.json
-    │   └── robots.txt
-    ├── src/
-    │   ├── App.css
-    │   ├── App.js
-    │   ├── App.test.js
-    │   ├── CHANGELOG.md
-    │   ├── firebaseConfig.js
-    │   ├── index.css
-    │   ├── index.js
-    │   ├── reportWebVitals.js
-    │   ├── setupTests.js
-    │   ├── components/
-    │   │   ├── AdminDashboard.css
-    │   │   ├── AdminDashboard.js
-    │   │   ├── AdminEarnings.css
-    │   │   ├── AdminEarnings.js
-    │   │   ├── AdminManageCategory.css
-    │   │   ├── AdminManageCategory.js
-    │   │   ├── AdminManageDeals.css
-    │   │   ├── AdminManageDeals.js
-    │   │   ├── AdminManageUsers.css
-    │   │   ├── AdminManageUsers.js
-    │   │   ├── AdminProfile.css
-    │   │   ├── AdminProfile.js
-    │   │   ├── AnalyticsPage.css
-    │   │   ├── AnalyticsPage.js
-    │   │   ├── CartPage.css
-    │   │   ├── CartPage.js
-    │   │   ├── CreateDeal.css
-    │   │   ├── CreateDeal.js
-    │   │   ├── CustomerForgotPassword.js
-    │   │   ├── CustomerProfilePage.css
-    │   │   ├── CustomerProfilePage.js
-    │   │   ├── DealDetailsPage.css
-    │   │   ├── DealDetailsPage.js
-    │   │   ├── DealsPage.css
-    │   │   ├── DealsPage.js
-    │   │   ├── EditDealPage.js
-    │   │   ├── FeedbackPage.css
-    │   │   ├── FeedbackPage.js
-    │   │   ├── LandingPage.css
-    │   │   ├── LandingPage.js
-    │   │   ├── Login.css
-    │   │   ├── Login.js
-    │   │   ├── MerchantCustomersPage.css
-    │   │   ├── MerchantCustomersPage.js
-    │   │   ├── MerchantDashboard.css
-    │   │   ├── MerchantDashboard.js
-    │   │   ├── MerchantDealsPage.css
-    │   │   ├── MerchantDealsPage.js
-    │   │   ├── MerchantForgotPassword.css
-    │   │   ├── MerchantForgotPassword.js
-    │   │   ├── MerchantLogin.css
-    │   │   ├── MerchantLogin.js
-    │   │   ├── MerchantRegister.css
-    │   │   ├── MerchantRegister.js
-    │   │   ├── Navbar.css
-    │   │   ├── Navbar.js
-    │   │   ├── Navbar.test.js
-    │   │   ├── OrderTrackingPage.css
-    │   │   ├── OrderTrackingPage.js
-    │   │   ├── PaymentPage.css
-    │   │   ├── PaymentPage.js
-    │   │   ├── ProtectedRoute.js
-    │   │   ├── Register.js
-    │   │   ├── Settings.css
-    │   │   └── Settings.js
-    │   ├── context/
-    │   │   └── AuthContext.js
-    │   └── pages/
-    │       ├── NotFound.css
-    │       └── NotFound.js
-    ├── .firebase/
-    │   └── hosting.YnVpbGQ.cache
-    └── .github/
-        └── workflows/
-            ├── firebase-deploy-live.yml
-            ├── firebase-deploy-pr.yml
-            ├── owasp-lite.yml
-            └── tests.yml
+```plaintext
+patelankeet2-dealhub2/
+├── README.md                   # Project documentation
+├── TESTING_REFLECTION.md       # Reflection notes for testing
+├── firebase.json               # Firebase deployment config
+├── .firebaserc                 # Firebase project alias config
+├── package.json                # Node dependencies & scripts
+├── public/                     # Static assets
+│   ├── index.html              # App HTML entry point
+│   ├── manifest.json           # PWA manifest
+│   └── robots.txt              # SEO rules
+├── src/                        # Application source
+│   ├── App.js                  # Main App entry
+│   ├── App.css                 # Global styles
+│   ├── App.test.js             # React testing config
+│   ├── CHANGELOG.md            # Project version history
+│   ├── firebaseConfig.js       # Firebase initialization
+│   ├── index.js                # ReactDOM entry point
+│   ├── index.css               # Base CSS
+│   ├── reportWebVitals.js      # Performance metrics
+│   ├── setupTests.js           # Test setup file
+│   ├── context/                # Global contexts
+│   │   └── AuthContext.js      # Auth state context
+│   ├── components/             # Reusable UI + features
+│   │   ├── AdminDashboard.{js,css}
+│   │   ├── AdminEarnings.{js,css}
+│   │   ├── AdminManageCategory.{js,css}
+│   │   ├── AdminManageDeals.{js,css}
+│   │   ├── AdminManageUsers.{js,css}
+│   │   ├── AdminProfile.{js,css}
+│   │   ├── AnalyticsPage.{js,css}
+│   │   ├── CartPage.{js,css}
+│   │   ├── CreateDeal.{js,css}
+│   │   ├── CustomerForgotPassword.js
+│   │   ├── CustomerProfilePage.{js,css}
+│   │   ├── DealDetailsPage.{js,css}
+│   │   ├── DealsPage.{js,css}
+│   │   ├── EditDealPage.js
+│   │   ├── FeedbackPage.{js,css}
+│   │   ├── LandingPage.{js,css}
+│   │   ├── Login.{js,css}
+│   │   ├── MerchantCustomersPage.{js,css}
+│   │   ├── MerchantDashboard.{js,css}
+│   │   ├── MerchantDealsPage.{js,css}
+│   │   ├── MerchantForgotPassword.{js,css}
+│   │   ├── MerchantLogin.{js,css}
+│   │   ├── MerchantRegister.{js,css}
+│   │   ├── Navbar.{js,css,test.js}
+│   │   ├── OrderTrackingPage.{js,css}
+│   │   ├── PaymentPage.{js,css}
+│   │   ├── ProtectedRoute.js
+│   │   ├── Register.js
+│   │   └── Settings.{js,css}
+│   └── pages/                  # Page-level components
+│       ├── NotFound.js
+│       └── NotFound.css
+├── .firebase/                  # Firebase cache
+│   └── hosting.YnVpbGQ.cache
+└── .github/                    # GitHub workflows
+    └── workflows/
+        ├── firebase-deploy-live.yml  # Live deploy pipeline
+        ├── firebase-deploy-pr.yml    # PR preview deploy pipeline
+        ├── owasp-lite.yml            # Security scan
+        └── tests.yml                 # Unit test workflow
 
-
----
 
 ## 🚀 Features by User Role
 
